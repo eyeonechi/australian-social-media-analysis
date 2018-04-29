@@ -23,10 +23,11 @@ import string
 import time
 import tweepy
 
+from couch import Couch
+from keywords import Keywords
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-from couch import Couch
 
 """
 Custom StreamListener for streaming data
@@ -126,7 +127,8 @@ def main():
             args.query
         )
     )
-    twitter_stream.filter(track=[args.query])
+    if (args.query == "vegetables"):
+        twitter_stream.filter(track=[Keywords.vegetables])
 
 if __name__ == '__main__':
     main()
