@@ -42,7 +42,8 @@ class TwitterStreamListener(StreamListener):
     def on_data(self, data):
         json_data = json.loads(data)
         self.conn.insert(json_data)
-        print(json.dumps(json_data["text"]))
+        if ("text" in json_data):
+            print(json.dumps(json_data["text"]))
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
