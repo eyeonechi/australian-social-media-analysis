@@ -36,11 +36,13 @@ class TwitterStreamListener(StreamListener):
 
     def __init__(self, data_dir, query):
         query_fname = format_filename(query)
-        self.conn = Couch("test1")
+        self.conn = Couch(query)
         self.outfile = "%s/%s.json" % (data_dir, query_fname)
 
     def on_data(self, data):
-        self.conn.insert(json.loads(data))
+        json_data = json.loads(data)
+        self.conn.insert(json_data)
+        print(json.dumps(json_data["text"]))
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
@@ -127,8 +129,16 @@ def main():
             args.query
         )
     )
-    if (args.query == "vegetables"):
-        twitter_stream.filter(track=[Keywords.vegetables])
+    if (args.query == "fastfood"):
+        twitter_stream.filter(track=[word for word in Keywords.fastfood])
+    elif (args.query == "fruits"):
+        twitter_stream.filter(track=[word for word in Keywords.fruits])
+    elif (args.query == "meat"):
+        twitter_stream.filter(track=[word for word in Keywords.meat])
+    elif (args.query == "seafood"):
+        twitter_stream.filter(track=[word for word in Keywords.seafood])
+    elif (args.query == "vegetables"):
+        twitter_stream.filter(track=[word for word in Keywords.vegetables])
 
 if __name__ == '__main__':
     main()
