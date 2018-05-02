@@ -143,13 +143,5 @@ def main():
     elif (args.query == "vegetables"):
         twitter_stream.filter(track=[word for word in Keywords.vegetables])
 
-'''
-for tweet_info in tweepy.Cursor(api.search, q=query, lang = ‘en’, tweet_mode=‘extended’).items(100):
-if ‘retweeted_status’ in dir(tweet_info):
-tweet=tweet_info.retweeted_status.full_text
-else:
-tweet=tweet_info.full_text
-'''
-
 if __name__ == '__main__':
     main()
