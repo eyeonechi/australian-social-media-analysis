@@ -23,10 +23,11 @@ import string
 import time
 import tweepy
 
+from couch import Couch
+from keywords import Keywords
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-from couch import Couch
 
 """
 Custom StreamListener for streaming data
@@ -35,11 +36,14 @@ class TwitterStreamListener(StreamListener):
 
     def __init__(self, data_dir, query):
         query_fname = format_filename(query)
-        self.conn = Couch("test1")
+        self.conn = Couch(query)
         self.outfile = "%s/%s.json" % (data_dir, query_fname)
 
     def on_data(self, data):
-        self.conn.insert(json.loads(data))
+        json_data = json.loads(data)
+        self.conn.insert(json_data)
+        if ("text" in json_data):
+            print(json.dumps(json_data["text"]))
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
@@ -111,12 +115,12 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
     auth = OAuthHandler(
-        config.consumer_key,
-        config.consumer_secret
+        config.consumer_key2,
+        config.consumer_secret2
     )
     auth.set_access_token(
-        config.access_token,
-        config.access_secret
+        config.access_token2,
+        config.access_secret2
     )
     api = tweepy.API(auth)
     twitter_stream = Stream(
@@ -126,7 +130,26 @@ def main():
             args.query
         )
     )
-    twitter_stream.filter(track=[args.query])
+    if (args.query == "fastfood"):
+        twitter_stream.filter(track=[word for word in Keywords.fastfood])
+    elif (args.query == "fruits"):
+        twitter_stream.filter(track=[word for word in Keywords.fruits])
+    elif (args.query == "grains"):
+        twitter_stream.filter(track=[word for word in Keywords.grains])
+    elif (args.query == "meat"):
+        twitter_stream.filter(track=[word for word in Keywords.meat])
+    elif (args.query == "seafood"):
+        twitter_stream.filter(track=[word for word in Keywords.seafood])
+    elif (args.query == "vegetables"):
+        twitter_stream.filter(track=[word for word in Keywords.vegetables])
+
+'''
+for tweet_info in tweepy.Cursor(api.search, q=query, lang = ‘en’, tweet_mode=‘extended’).items(100):
+if ‘retweeted_status’ in dir(tweet_info):
+tweet=tweet_info.retweeted_status.full_text
+else:
+tweet=tweet_info.full_text
+'''
 
 if __name__ == '__main__':
     main()

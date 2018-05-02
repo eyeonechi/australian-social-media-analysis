@@ -7,21 +7,21 @@ from cloudant.database import CouchDatabase
 class Couch:
     db = None
     c_db = None
+    couch_db = None
 
     # usage: database = Couch(db_name)
     # fields: db_name -> str
     def __init__(self, db_name):
         self.client = CouchDB('aassddff', 'ffddssaa', url='http://115.146.85.206:5984/', connect=True, auto_renew=True)
-        #self.client = CouchDB('aassddff', 'ffddssaa', url='http://127.0.0.1:5984/', connect=True, auto_renew=True)
         self.select_db(db_name)
 
     # Get one database selected; if the database doesn't exist, create it.
     # usage: database.select_db(db_name);
     # fields: db_name -> str
     def select_db(self, db_name):
-        couch_db = CouchDatabase(self.client, db_name)
-        if not couch_db.exists():
-            couch_db.create()
+        self.couch_db = CouchDatabase(self.client, db_name)
+        if not self.couch_db.exists():
+            self.couch_db.create()
         self.db = self.client[db_name]
         self.c_db = CloudantDatabase(self.client, db_name)
 
@@ -30,19 +30,24 @@ class Couch:
     def close(self):
         self.client.disconnect()
 
+    # Get count of documents in current database;
+    # usage database.count();
+    def count(self):
+        return self.couch_db.doc_count()
+
     # Get everything from the database;
     # usage: database.query_all();
+    # note: after query_all, iterate the returned item to get every document
     def query_all(self):
-        for document in self.db:
-            print(document)
+        return self.db
 
     # Select something from the database;
     # usage: database.query(selector);
     # fields: selector -> Dictionary
+    # note: after query, iterate the returned item to get every document
     def query(self, selector):
         result = self.c_db.get_query_result(selector)
-        for document in result:
-            print(document)
+        return result
 
     # insert operation of the database;
     # usage: database.insert(doc);
@@ -82,6 +87,7 @@ class Couch:
 
 if __name__ == "__main__":
     conn = Couch("test1")
-    #doc = {'foo': 'bar2'}
-    #conn.delete({'foo': 'bar'})
+    doc = {'foo': 'bar2'}
+    # conn.delete({'foo': 'bar'})
     conn.query_all()
+
