@@ -7,9 +7,9 @@ class Argument:
         parser = argparse.ArgumentParser(
             description="Twitter Streamer"
         )
-        config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
+        configuration = os.path.join(os.path.dirname(__file__), "config.json")
         # Config file
-        parser.add_argument("-c", default=config_file)
+        parser.add_argument("-c", dest="config", default=configuration)
         # Save to file
         parser.add_argument("-d", dest="directory")
         # Input file

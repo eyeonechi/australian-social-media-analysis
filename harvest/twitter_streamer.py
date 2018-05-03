@@ -17,8 +17,8 @@ wc -l <file>.json
 """
 
 import argparse
-import config
 import json
+import re
 import string
 import time
 import tweepy
@@ -30,7 +30,7 @@ from tweepy.streaming import StreamListener
 from util.argument import Argument
 from util.authentication import Authentication
 from util.config import Config
-#from util.couch import Couch
+from util.couch import Couch
 import util.spatial
 
 """
@@ -42,48 +42,51 @@ class TwitterStreamListener(StreamListener):
         query_fname = format_filename(query)
         self.conn = Couch(query)
         self.outfile = "%s/%s.json" % (data_dir, query_fname)
+        self.userfile = "%s/%s_users.json" % (data_dir, query_fname)
 
     def on_data(self, data):
         json_data = json.loads(data)
         self.conn.insert(json_data)
-        if ("text" in json_data):
+        mentions = []
+        if "text" in json_data:
             print(json.dumps(json_data["text"]))
+            regex = re.compile(r'(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9_]+)', re.UNICODE)
+            mentions = regex.findall(json.dumps(json_data["text"]))
+        if "user" in json_data:
+            if ("screen_name" in json_data["user"]):
+                mentions.append(json.dumps(json_data["user"]["screen_name"])[1:-1])
+        '''
+        if "entities" in json_data:
+            if "user_mentions" in json_data:
+                for user in json_data["entities"]["user_mentions"]:
+                    if "id_str" in json_data["entities"]["user_mentions"][i]:
+                        print("user_mentions_user_id: " + json_data["entities"]["user_mentions"][i]["id_str"])
+        if "retweeted_status" in json_data:
+            if "user" in json_data["retweeted_status"]:
+                if "id_str" in json_data["retweeted_status"]["user"]:
+                    print("retweeted_status_user_id" + json_data["retweeted_status"]["user"]["id_str"])
         '''
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
-                return True
+            with open(self.userfile, "a") as f:
+                for mention in mentions:
+                    f.write(mention + '\n')
         except BaseException as e:
             print("Error on_data: %s" % str(e))
-            time.sleep(5)
-        '''
+
+        #To get user screen name from user id
+        #user = api.get_user(1088398616)
+        #user.screen_name
+
+        #To get user id from user screen name
+        #user = api.get_user(screen_name = 'saimadhup')
+        #print(user.id)
         return True
 
     def on_error(self, status):
         print(status)
         return True
-
-"""
-Get parser for command line arguments
-Return:
-    ArgumentParser -- the argument parser
-"""
-def get_parser():
-    parser = argparse.ArgumentParser(description="Twitter Downloader")
-    parser.add_argument(
-        "-q",
-        "--query",
-        dest="query",
-        help="Query/Filter",
-        default="-"
-    )
-    parser.add_argument(
-        "-d",
-        "--data-dir",
-        dest="data_dir",
-        help="Output/Data Directory"
-    )
-    return parser
 
 """
 Convert file name into a safe string
@@ -121,9 +124,9 @@ def main():
 
     # Arguments parsing
     args = Argument().get_args()
-    auth = Authentication().get_auth()
+    config = Config(args.config).get_config()
+    auth = Authentication(config.get_consumer_key(), config.get_consumer_secret(), config.get_access_token(), config.get_access_secret()).get_auth()
     api = tweepy.API(auth)
-    #config = Config(args.config).getConfig()
     listener = TwitterStreamListener(args.directory, args.query)
     stream = Stream(auth, listener)
 
