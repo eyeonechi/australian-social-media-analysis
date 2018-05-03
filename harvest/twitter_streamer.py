@@ -23,11 +23,15 @@ import string
 import time
 import tweepy
 
-from couch import Couch
 from keywords import Keywords
-from tweepy import OAuthHandler
+
 from tweepy import Stream
 from tweepy.streaming import StreamListener
+from util.argument import Argument
+from util.authentication import Authentication
+from util.config import Config
+#from util.couch import Couch
+import util.spatial
 
 """
 Custom StreamListener for streaming data
@@ -44,6 +48,7 @@ class TwitterStreamListener(StreamListener):
         self.conn.insert(json_data)
         if ("text" in json_data):
             print(json.dumps(json_data["text"]))
+        '''
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
@@ -51,6 +56,7 @@ class TwitterStreamListener(StreamListener):
         except BaseException as e:
             print("Error on_data: %s" % str(e))
             time.sleep(5)
+        '''
         return True
 
     def on_error(self, status):
@@ -112,36 +118,34 @@ def parse(cls, api, raw):
 Main function
 """
 def main():
-    parser = get_parser()
-    args = parser.parse_args()
-    auth = OAuthHandler(
-        config.consumer_key,
-        config.consumer_secret
-    )
-    auth.set_access_token(
-        config.access_token,
-        config.access_secret
-    )
+
+    # Arguments parsing
+    args = Argument().get_args()
+    auth = Authentication().get_auth()
     api = tweepy.API(auth)
-    twitter_stream = Stream(
-        auth,
-        TwitterStreamListener(
-            args.data_dir,
-            args.query
-        )
-    )
+    #config = Config(args.config).getConfig()
+    listener = TwitterStreamListener(args.directory, args.query)
+    stream = Stream(auth, listener)
+
+    # Bounding box
+    bounding_box = [113.338953078, -43.6345972634, 153.569469029, -10.6681857235]
+    print("boundary: ", bounding_box)
+    stream.filter(locations=bounding_box);
+
+'''
     if (args.query == "fastfood"):
-        twitter_stream.filter(track=[word for word in Keywords.fastfood])
+        stream.filter(track=[word for word in Keywords.fastfood])
     elif (args.query == "fruits"):
-        twitter_stream.filter(track=[word for word in Keywords.fruits])
+        stream.filter(track=[word for word in Keywords.fruits])
     elif (args.query == "grains"):
-        twitter_stream.filter(track=[word for word in Keywords.grains])
+        stream.filter(track=[word for word in Keywords.grains])
     elif (args.query == "meat"):
-        twitter_stream.filter(track=[word for word in Keywords.meat])
+        stream.filter(track=[word for word in Keywords.meat])
     elif (args.query == "seafood"):
-        twitter_stream.filter(track=[word for word in Keywords.seafood])
+        stream.filter(track=[word for word in Keywords.seafood])
     elif (args.query == "vegetables"):
-        twitter_stream.filter(track=[word for word in Keywords.vegetables])
+        stream.filter(track=[word for word in Keywords.vegetables])
+'''
 
 if __name__ == '__main__':
     main()
