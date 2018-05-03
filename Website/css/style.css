@@ -22,7 +22,7 @@ html {
   font-size: 100%;
 }
 
-h1,h2,h3 {
+h1,h2,h3,h6 {
   font-weight: 500;
   letter-spacing: 0.3rem;
   text-transform: uppercase;
@@ -39,8 +39,25 @@ h2 {
 }
 
 h3 {
+  font-size: 1.8rem;
+  line-height: 2rem;
+}
+
+h4 {
+  font-size: 1.3rem;
+  line-height: 2rem;
+}
+
+h5 {
   font-size: 1rem;
   line-height: 2rem;
+  margin-right: 5px;
+}
+
+h6 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  align-items: left;
 }
 
 p {
@@ -96,6 +113,66 @@ footer {
   align-items: center;
   background: none repeat scroll 0 0 #ffffff;
 }
+
+.roundButton {
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 50;
+	height: 200px;
+	width: 200px;
+	padding-bottom: 2px;
+	background-size: cover;
+	border: none;
+	outline:none;
+	margin-right: 30px;
+	/*
+	border-radius: 50%;
+	background-size: 200px auto;
+	background-position: 50% 50%;
+	*/
+}
+
+.roundButton:hover {
+    background-color: #48D1CC;
+}
+
+.roundB3 {
+	background: url('../images/about-3.png') no-repeat;
+}
+.roundB1 {
+	background: url('../images/chart.png') no-repeat;
+}
+.roundB2 {
+	background: url('../images/map.png') no-repeat;
+}
+#map { 
+	position:absolute; 
+	top:70px; 
+	bottom:80px; 
+	left: 250px;
+	width: 500px; 
+}
+/*TEST*/
+.btn2 {
+	top: 900px;
+    background: transparent;
+    border: 3px solid #000000;
+    border-radius: 0px;
+    color: #000000;
+    font-weight: 900;
+    letter-spacing: 1px;
+    padding: 14px 36px;
+    margin-top: 42px;
+    margin-right: 16px;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+.btn2:hover {
+  background: #f1c11a;
+  color: #000000;
+  border-color: transparent;
+}
+/*TEST*/
 
 .sk-circle {
   margin: 40px auto;
@@ -238,7 +315,9 @@ footer {
 
 #home .home-thumb {
   text-align: center;
-}
+  background-color: yellow;
+  background: rgba(0, 0, 0, 0.5);
+ }
 
 #home .btn {
     background: transparent;
@@ -265,7 +344,6 @@ footer {
     color: #242424;
     border-color: transparent;
 }
-
 
 /* about section */
 #about h3 {
