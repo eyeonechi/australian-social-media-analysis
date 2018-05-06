@@ -5,10 +5,7 @@
 	<meta charset="utf-8">
 
 	<title>Cluster and Cloud Computing</title>
-<!--
-Comila Template
-http://www.templatemo.com/tm-490-comila
--->
+
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="keywords" content="">
@@ -25,7 +22,8 @@ http://www.templatemo.com/tm-490-comila
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Rajdhani:400,500,700' rel='stylesheet' type='text/css'>
-
+	
+	<!-- mapbox -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
 </head>
@@ -57,13 +55,8 @@ http://www.templatemo.com/tm-490-comila
 
 			<div class="col-md-offset-2 col-md-8 col-sm-12">
 				<div class="home-thumb">
-					<h1 class="wow fadeInUp" data-wow-delay="0.4s">Hello, we are <strong>Cloud Nine</strong></h1>
+					<h1 class="wow fadeInUp" data-wow-delay="0.4s">Hello, we are <strong>group 42</strong></h1>
           			<h3 class="wow fadeInUp" data-wow-delay="0.6s">Welcome to our <strong> Data Insights </strong> website!</h3>
-          			<!--
-					<a href="#about" class="btn btn-lg btn-default smoothScroll wow fadeInUp hidden-xs" data-wow-delay="0.8s">Let's begin</a>
-        			<a href="#" data-toggle="modal" data-target="#modal1" class="btn btn-lg btn-success smoothScroll wow fadeInUp" data-wow-delay="1.0s">Notify me!</a>
-					 <input class="roundButton roundB3" onClick="document.getElementById('about').scrollIntoView();" />	
-					-->
 					<button href="#about" class="roundButton roundB3" onClick="document.getElementById('about').scrollIntoView();"></button>
 					<button href="#feature" class="roundButton roundB1" onClick="document.getElementById('feature').scrollIntoView();"></button>
 					<button href="#contact" class="roundButton roundB2" onClick="document.getElementById('contact').scrollIntoView();""></button>
@@ -127,7 +120,7 @@ http://www.templatemo.com/tm-490-comila
           </div>
           <div class="media-body">
             <h2 class="media-heading">Analytic Topic</h2>
-            <h5><b>Food and How it affects the Mood.</h5></b>
+            <h5><b>- Predict food consumption based on user profiles and behaviours<br>- Predict the future trend of homeless</h5></b>
           </div>
         </div>
       </div>
@@ -184,39 +177,16 @@ http://www.templatemo.com/tm-490-comila
 			<div class="col-md-offset-2 col-md-8 col-sm-12">
 				<div class="section-title">
 					<h6 class="wow fadeInUp" data-wow-delay="0.3s">View Insights on <strong>Map</strong></h6>
-					<p class="wow fadeInUp" data-wow-delay="0.6s">nonsense text here</p>
+					<br><br>
+					<b><a href="mapFood.html" style="font-size: 25px; text-decoration: none">Food Consumption in Australian Cities</a></b><br><br>
+					<b><a href="mapSentiment.html" style="font-size: 25px; text-decoration: none">Sentiment Analytics in Australian Cities</a></b><br><br>
+					<b><a href="mapHomeless.html" style="font-size: 25px; text-decoration: none">Homeless in Australian Cities</a></b><br><br>
 				</div>
-				<div>
-					<div>
-						<label><b>Select a City:</label></b>
-						<!-- drop-down list-->
-						<select class="default" id="citylist" name="citylist">
-						  <option value="melbourne">Melbourne</option>
-						  <option value="sydney">Sydney</option>
-						  <option value="canberra">Canberra</option>
-						  <option value="perth">Perth</option>
-						  <option value="adelaide">Adelaide</option>
-						</select>
+					<!--
+					<div class="clearfix text-center col-md-12">
+						<div id='map'></div>
 					</div>
-
-					<!-- drop-down list end-->
-					<h5><b>-- OR --</h5></b>
-					<div>
-						<label><b>Select a State:</label></b>
-						<!-- drop-down list-->
-						<select class="default" id="statelist" name="statelist">
-						  <option value="vic">VIC</option>
-						  <option value="nsw">NSW</option>
-						  <option value="act">ACT</option>
-						  <option value="wa">WA</option>
-						  <option value="sa">SA</option>
-						</select>
-					</div>
-					<div id='map'></div>
-					<div class="clearfix text-center col-md-12 col-sm-12">
-						<button  href="map.html" class="btn2 btn-default smoothScroll" onclick="window.location.href='map.html'";>View Map</button>
-					</div>
-				</div>
+					-->
 			</div>
 		</div>
 	</div>
@@ -234,6 +204,7 @@ http://www.templatemo.com/tm-490-comila
 <script src="js/wow.min.js"></script>
 <script src="js/smoothscroll.js"></script>
 <script src="js/custom.js"></script>
+<!--
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFobmdvYyIsImEiOiJjamc3Z2ZldDUwMjc4Mndwam9wZWNqZG5rIn0.Qj8OvcCuEytwM9tAXakxpQ';
 	var map = new mapboxgl.Map({
@@ -243,5 +214,6 @@ http://www.templatemo.com/tm-490-comila
 		zoom: 2 // starting zoom
 	});
 </script>
+-->
 </body>
 </html>
