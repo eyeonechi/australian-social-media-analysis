@@ -6,17 +6,6 @@ Team 42
 twitter_streamer.py
 """
 
-"""
-Instructions
-sudo pip install cloudant
-sudo pip install tweepy
-python twitter_streamer.py -q <query> -d <directory>
-Listens and streams a list of tweets for query <query> in <directory>
-To know how many tweets are gathered
-wc -l <file>.json
-"""
-
-import argparse
 import json
 import re
 import string
@@ -24,7 +13,6 @@ import time
 import tweepy
 
 from keywords import Keywords
-
 from tweepy import Stream
 from tweepy.streaming import StreamListener
 from util.argument import Argument
@@ -40,14 +28,16 @@ class TwitterStreamListener(StreamListener):
 
     def __init__(self, data_dir, query):
         query_fname = format_filename(query)
-        self.conn = Couch(query)
+        #self.conn = Couch(query)
         self.outfile = "%s/%s.json" % (data_dir, query_fname)
         self.userfile = "%s/%s_users.json" % (data_dir, query_fname)
 
     def on_data(self, data):
         json_data = json.loads(data)
-        self.conn.insert(json_data)
+        #self.conn.insert(json_data)
         mentions = []
+        print(data)
+        '''
         if "text" in json_data:
             print(json.dumps(json_data["text"]))
             regex = re.compile(r'(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9_]+)', re.UNICODE)
@@ -55,7 +45,6 @@ class TwitterStreamListener(StreamListener):
         if "user" in json_data:
             if ("screen_name" in json_data["user"]):
                 mentions.append(json.dumps(json_data["user"]["screen_name"])[1:-1])
-        '''
         if "entities" in json_data:
             if "user_mentions" in json_data:
                 for user in json_data["entities"]["user_mentions"]:
@@ -66,6 +55,7 @@ class TwitterStreamListener(StreamListener):
                 if "id_str" in json_data["retweeted_status"]["user"]:
                     print("retweeted_status_user_id" + json_data["retweeted_status"]["user"]["id_str"])
         '''
+        '''
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
@@ -74,7 +64,7 @@ class TwitterStreamListener(StreamListener):
                     f.write(mention + '\n')
         except BaseException as e:
             print("Error on_data: %s" % str(e))
-
+        '''
         #To get user screen name from user id
         #user = api.get_user(1088398616)
         #user.screen_name
@@ -124,8 +114,8 @@ def main():
 
     # Arguments parsing
     args = Argument().get_args()
-    config = Config(args.config).get_config()
-    auth = Authentication(config.get_consumer_key(), config.get_consumer_secret(), config.get_access_token(), config.get_access_secret()).get_auth()
+    config = Config(args.config, args.auth).get_config()
+    auth = Authentication(config)
     api = tweepy.API(auth)
     listener = TwitterStreamListener(args.directory, args.query)
     stream = Stream(auth, listener)
@@ -133,7 +123,7 @@ def main():
     # Bounding box
     bounding_box = [113.338953078, -43.6345972634, 153.569469029, -10.6681857235]
     print("boundary: ", bounding_box)
-    stream.filter(locations=bounding_box);
+    #stream.filter(locations=bounding_box);
 
 '''
     if (args.query == "fastfood"):
