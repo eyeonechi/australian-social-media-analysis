@@ -1,48 +1,45 @@
 #!/bin/bash
 
+cd couchdb/
 echo -- Pull Docker image
-docker pull couchdb:2.1.1
+sudo docker pull couchdb:2.1.1
 
 echo -- Set node IP addresses, electing the first as master node and admin credentials
-export nodes=(172.17.0.2 172.17.0.3 172.17.0.4)
+export declare nodes=(172.17.0.2 172.17.0.3 172.17.0.4)
 export masternode=`echo ${nodes} | cut -f1 -d' '`
-export othernodes=`echo ${nodes[*]} | sed s/${masternode}//`
-export size=${#nodes[*]}
+export othernodes=`echo ${nodes[@]} | sed s/${masternode}//`
+export size=${#nodes[@]}
 export user=admin
 export pass=admin
-echo nodes ${nodes[*]}
-echo masternode $masternode
-echo othernodes $othernodes
-echo size $size
-echo user $user
-echo pass $admin
 
 echo -- Create Docker containers
-for node in ${nodes[*]}}; do docker create couchdb:2.1.1 -–ip=${node}; done
+for node in ${nodes[@]}}; do sudo docker create couchdb:2.1.1 -–ip=${node}; done
 
 echo -- Put in conts the Docker container IDs
-declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
+declare -a conts=(`sudo docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
 
 echo -- Start the containers
-for cont in "${conts[*]}"; do docker start ${cont}; done
+for cont in "${conts[@]}"; do sudo docker start ${cont}; done
 sleep 3
 
 echo -- Write the cookie name and node name to the CouchDB configuration on every node
 for (( i=0; i<${size}; i++ )); do
-    docker exec ${conts[${i}]} \
-      bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
-    docker exec ${conts[${i}]} \
-      bash -c "echo \"-name couchdb@${nodes[${i}]}\" >> /opt/couchdb/etc/vm.args"
+  sudo docker exec ${conts[${i}]} \
+    bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
+  sudo docker exec ${conts[${i}]} \
+    bash -c "echo \"-name couchdb@${nodes[${i}]}\" >> /opt/couchdb/etc/vm.args"
 done
 
 echo -- Restart containers to pick-up changes to CouchDB configurations
-for cont in "${conts[*]}"; do docker restart ${cont}; done
+for cont in "${conts[@]}"; do sudo docker restart ${cont}; done
 sleep 3
-for node in "${nodes[*]}"; do
+
+echo -- Set the CouchDB cluster
+for node in "${nodes[@]}"; do
     curl -XPUT "http://${node}:5984/_node/_local/_config/admins/${user}" --data "\"${pass}\""
     curl -XPUT "http://${user}:${pass}@${node}:5984/_node/couchdb@${node}/_config/chttpd/bind_address" --data '"0.0.0.0"'
 done
-for node in "${nodes[*]}"; do
+for node in "${nodes[@]}"; do
     curl -XPOST "http://${user}:${pass}@${masternode}:5984/_cluster_setup" \
       --header "Content-Type: application/json" \
       --data "{\"action\": \"enable_cluster\", \"bind_address\":\"0.0.0.0\", \
@@ -50,7 +47,7 @@ for node in "${nodes[*]}"; do
         \"remote_node\": \"${node}\", \
         \"remote_current_user\":\"${user}\", \"remote_current_password\":\"${pass}\"}"
 done
-for node in "${nodes[*]}"; do
+for node in "${nodes[@]}"; do
     curl -XPOST "http://${user}:${pass}@${masternode}:5984/_cluster_setup" \
       --header "Content-Type: application/json" \
       --data "{\"action\": \"add_node\", \"host\":\"${node}\", \
@@ -62,28 +59,38 @@ rev=`curl -XGET "http://172.17.0.2:5986/_nodes/nonode@nohost" --user "${user}:${
 curl -X DELETE "http://172.17.0.2:5986/_nodes/nonode@nohost?rev=${rev}"  --user "${user}:${pass}"
 
 echo -- Check the correct cluster configuration
-for node in "${nodes[*]}"; do  curl -X GET "http://${user}:${pass}@${node}:5984/_membership"; done
+for node in "${nodes[@]}";
+  do curl -X GET "http://${user}:${pass}@${node}:5984/_membership";
+done
 
 echo -- Adding a database to one node of the cluster cause it to be created on all other nodes as well
 curl -XPUT "http://${user}:${pass}@${masternode}:5984/twitter"
-for node in "${nodes[*]}"; do  curl -X GET "http://${user}:${pass}@${node}:5984/_all_dbs"; done
+for node in "${nodes[@]}";
+  do curl -X GET "http://${user}:${pass}@${node}:5984/_all_dbs";
+done
 
 echo -- Put in conts the Docker container IDs
-declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
+declare -a conts=(`sudo docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
 
 echo -- Starts the cluster
-for cont in "${conts[*]}"; do docker start ${cont}; done
+for cont in "${conts[@]}";
+  do sudo docker start ${cont};
+done
 sleep 3
 
 echo -- Shutdowns the cluster nicely
-for cont in "${conts[*]}"; do docker stop ${cont}; done
+for cont in "${conts[@]}";
+  do sudo docker stop ${cont};
+done
 
 echo -- Deletes the cluster containers
-for cont in "${conts[*]}"; do docker rm --force ${cont}; done
+for cont in "${conts[@]}";
+  do sudo docker rm --force ${cont};
+done
 
 echo -- Add Twitter data
-curl -XPOST "http://${user}:${pass}@${masternode}:5984/twitter/_bulk_docs " --header "Content-Type: application/json" \
-  --data @./twitter/data.json
+cd ..
+curl -XPOST "http://${user}:${pass}@${masternode}:5984/twitter/_bulk_docs " --header "Content-Type: application/json" --data @./couchdb/twitter/data.json
 
 echo -- Add a design document with MapReduce Views, Lists and Shows functions
 grunt couch-compile

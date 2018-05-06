@@ -6,11 +6,22 @@ Australian Social Media Analysis
 - Who's discussing with who
 - What are the most popular hashtags
 
+# Instances
 classifier 115.146.85.190
 cultivator 115.146.86.105
 harvester 115.146.86.17
 bulldozer 115.146.85.206
+
 couchdb database 115.146.85.206:5984
+couchdb database 115.146.85.206:5000 (Web)
+
+# Instructions (Harvester)
+sudo pip install cloudant
+sudo pip install tweepy
+python twitter_streamer.py -q <query> -d <directory>
+Listens and streams a list of tweets for query <query> in <directory>
+To know how many tweets are gathered
+wc -l <file>.json
 
 ## The structure of a Tweet
 ### Attributes:
