@@ -78,38 +78,31 @@ setTimeout(function(){
 },200);
 
 function foo(result, markers) {
-	var color;
+	var color, homelessSize, homeless, homeless_trend;
+	var size = [];
 	if(result === undefined) {
 		console.log("Cannot GET data from: " +db_name);
 	} else {
 		result.data[0].features.forEach(function(point) {
-			switch(point.properties.food_group) {
-				case 'fastfood':
-					color = fastfoodIcon;
-					break;
-				case 'fruits':
-					color = fruitIcon;
-					break;
-				case 'grains':
-					color = grainIcon;
-					break;
-				case 'meat':
-					color = meatIcon;
-					break;
-				case 'seafood':
-					color = seafoodIcon;
-					break;
-				case 'vegetables':
-					color = vegIcon;
-					break;	
-				default:
-					color = redIcon;
-					console.log("Invalid food group");
-					break;
+			homeless = point.properties.homeless;
+			homelessSize = Math.log(homeless+1)*2+10;
+			homeless_trend = point.properties.homeless_trend;
+			size = [homelessSize, homelessSize];
+			if (homeless_trend > 0) {
+				markers.addLayer(L.marker(point.geometry.coordinates,{
+					icon: new L.icon({
+					iconSize: size,
+					iconUrl: '../images/redDot.png'
+					})
+				}).bindPopup("Homeless: "+JSON.stringify(homeless), {size: '30px'}));
+			} else {
+				markers.addLayer(L.marker(point.geometry.coordinates,{
+					icon: new L.icon({
+					iconSize: size,
+					iconUrl: '../images/greenDot.png'
+					})
+				}).bindPopup("Homeless: "+JSON.stringify(homeless)));
 			}
-			markers.addLayer(L.marker(point.geometry.coordinates,{
-				icon: color
-			}).bindPopup("Food: "+JSON.stringify(point.properties.food)));
 		});
 		mapLeaflet.addLayer(markers);
 	}
