@@ -227,8 +227,8 @@ if __name__ == "__main__":
     labels_and_predictions_homeless_trend = test_data_homeless_trend.map(lambda x: x.label).zip(homeless_trend_predictions)
 
     food_acc = labels_and_predictions_food.filter(lambda x: x[0] == x[1]).count() / float(test_data_food.count())
-    homeless_acc = labels_and_predictions_homeless.filter(lambda x: abs(x[0]-x[1]) < 100).count() / float(test_data_homeless.count())
-    homeless_trend_acc = labels_and_predictions_homeless_trend.filter(lambda x: abs(x[0]-x[1]) < 100).count() / float(test_data_homeless_trend.count())
+    homeless_acc = labels_and_predictions_homeless.filter(lambda x: abs(x[0]-x[1]) < 10).count() / float(test_data_homeless.count())
+    homeless_trend_acc = labels_and_predictions_homeless_trend.filter(lambda x: abs(x[0]-x[1]) < 10).count() / float(test_data_homeless_trend.count())
 
     print("\nFood classifier accuracy: %.3f%%" % (food_acc * 100))
     print("Homeless regressor accuracy: %.3f%%" % (homeless_acc * 100))
