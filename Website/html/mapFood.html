@@ -7,6 +7,10 @@
 	<script type ="text/javascript" src="/js/Couch.js"></script>
 	<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
 	<link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+	<script src="../Leaflet.markercluster-0.2/dist/leaflet.markercluster.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+	<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
 	<style>
 		body {
 		  margin: 0;
@@ -31,7 +35,7 @@
 	  .setView([-37.814, 144.96332], 5);
 //end map initiation
 
-//set marker icon
+//set markers icon
 var redIcon = L.icon({
     iconUrl: '/images/redDot.png',
     iconSize:     [10, 10], // size of the icon
@@ -56,9 +60,9 @@ var darkgreenIcon = L.icon({
     iconUrl: '/images/greendarkDot.png',
     iconSize:     [10, 10], // size of the icon
 });
-//end marker
+//end markers
 
-//image marker
+//image markers
 var meatIcon = L.icon({
     iconUrl: '/images/googleIcons/ms_steak.png',
     iconSize:     [30, 30], // size of the icon
@@ -87,45 +91,46 @@ var grainIcon = L.icon({
 
 //get data from server  
 	var couch = new Couch();
-	var db_name = "test000";
+	var db_name = "prediction11885";
+	//var db_name = "test002";
 	var result = couch.query_all(db_name);
-	var marker, color;
+	var markers = new L.MarkerClusterGroup();
+	var color;
 	if(result === undefined) {
 		console.log("Cannot GET data from: " +db_name);
 	} else {
-		//console.log(result.data[0].features);
 		result.data[0].features.forEach(function(point) {
-			console.log(point.properties.food);
-			if (point.properties.food === 'pizza') {
-				color = fastfoodIcon;
-			} else {
-				color = vegIcon;
+			switch(point.properties.food_group) {
+				case 'fastfood':
+					color = fastfoodIcon;
+					break;
+				case 'fruits':
+					color = fruitIcon;
+					break;
+				case 'grains':
+					color = grainIcon;
+					break;
+				case 'meat':
+					color = meatIcon;
+					break;
+				case 'seafood':
+					color = seafoodIcon;
+					break;
+				case 'vegetables':
+					color = vegIcon;
+					break;	
+				default:
+					color = redIcon;
+					console.log("Invalid food group");
+					break;
 			}
-			marker = L.marker(point.geometry.coordinates,{
+			markers.addLayer(L.marker(point.geometry.coordinates,{
 				icon: color
-			}).addTo(mapLeaflet);
-			marker.bindPopup(JSON.stringify(point.properties));
+			}))
+			//markers.bindPopup(JSON.stringify(point.properties));
 		});
+		mapLeaflet.addLayer(markers);
 	}
-	/*
-	map.on('zoomend', function() {
-		var currentZoom = map.getZoom();
-		if (currentZoom > 12) {
-			all_testptLayer.eachLayer(function(layer) {
-				if (layer.feature.properties.num < 0.5)
-					return layer.setIcon(ar_icon_1);
-				else if (feature.properties.num < 1.0)
-					return layer.setIcon(ar_icon_2);
-			});
-		} else {
-			all_testptLayer.eachLayer(function(layer) {
-				if (layer.feature.properties.num < 0.5)
-					return layer.setIcon(ar_icon_1_double_size);
-				else if (feature.properties.num < 1.0)
-					return layer.setIcon(ar_icon_2_double_size);
-			});
-		}
-	}*/
 </script>
 </body>
 </html>
