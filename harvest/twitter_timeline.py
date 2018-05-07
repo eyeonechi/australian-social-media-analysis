@@ -27,13 +27,14 @@ def main():
     # Creation of the actual interface, using authentication
     api = tweepy.API(auth.get_auth())
 
-    with open(args.input, "r") as f:
-        for line in f:
-            screen_name = '@' + line
-            print("\nscraping timeline: " + screen_name)
-            for status in tweepy.Cursor(api.user_timeline, screen_name=screen_name).items():
-                #print status._json['text']
-                print status
+    with open(args.input, "r") as input:
+        with open(args.output, "a") as output:
+            for line in input:
+                screen_name = '@' + line
+                print("\ntimeline user: " + screen_name)
+                for status in tweepy.Cursor(api.user_timeline, screen_name=screen_name).items():
+                    print status._json['text']
+                    out.write(status)
 
 if __name__ == '__main__':
     main()

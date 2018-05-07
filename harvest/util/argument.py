@@ -19,6 +19,9 @@ class Argument:
         # Input file
         parser.add_argument("-i", dest="input", default=None)
 
+        # Output file
+        parser.add_argument("-o", dest="output", default=None)
+
         # Query
         parser.add_argument("-q", dest="query")
 
