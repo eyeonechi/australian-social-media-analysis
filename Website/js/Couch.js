@@ -28,7 +28,7 @@ function Couch(){
             data: {},
             dataType: "json",
             success: function(data) {
-				console.log(data);
+				//console.log(data);
                 result = data;
             }
         });
