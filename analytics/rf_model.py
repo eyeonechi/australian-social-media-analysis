@@ -162,6 +162,8 @@ if __name__ == "__main__":
 
     print("\nTotal number of rows loaded: %d" % df.count())
     
+    df = df.drop_duplicates()
+    print("\nTotal number of rows without duplicates: %d" % df.count())
     df.show()
     
     # filter dataframe
@@ -343,7 +345,7 @@ if __name__ == "__main__":
     my_db.insert(final_json)
     print("\nTotal number of rows inserted: %d" % (j))
             
-            
+    spark.stop()
             
             
             
