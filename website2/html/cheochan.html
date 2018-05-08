@@ -32,7 +32,7 @@
 
 <div id='map'></div>
 
-<script type="text/javascript" src="../geojson/aus_lga2.js"></script>
+<script type="text/javascript" src="../geojson/aus_lga2_merge.js"></script>
 
 <script type="text/javascript">
 
@@ -69,40 +69,16 @@
 
 
 	// get color depending on population density value
-	function getColor(feature) {
-
-		if (feature && feature.geometry && feature.geometry.coordinates){
-			var polygon = JSON.stringify(feature.geometry.coordinates[0][0]);
-			console.log(polygon.length);
-/*
-			var bbox, y, x;
-			for (var i = 0; i < result.data.length; i ++) {
-				//var countHomeless = result.data[i].cnt2016;
-				bbox = result.data[i].bbox;
-				y = (bbox[0] + bbox[2]) / 2;
-				x = (bbox[1] + bbox[3]) / 2;
-
-				if (inside([y, x], polygon)) {
-					console.log("inside");
-					return 'red';
-				}
-			}
-*/
-		}
-		return 'white';
-	}
-	/*
 	function getColor(d) {
-		return d > 1000 ? '#800026' :
-				d > 500  ? '#BD0026' :
-				d > 200  ? '#E31A1C' :
-				d > 100  ? '#FC4E2A' :
-				d > 50   ? '#FD8D3C' :
-				d > 20   ? '#FEB24C' :
-				d > 10   ? '#FED976' :
+		return d > 140 ? '#800026' :
+				d > 120  ? '#BD0026' :
+				d > 100  ? '#E31A1C' :
+				d > 80  ? '#FC4E2A' :
+				d > 60   ? '#FD8D3C' :
+				d > 40   ? '#FEB24C' :
+				d > 20   ? '#FED976' :
 							'#FFEDA0';
 	}
-	*/
 
 	function style(feature) {
 		return {
@@ -145,7 +121,7 @@
 
 	function onEachFeature(feature, layer) {
 		layer.setStyle({
-			fillColor: getColor(feature)
+			fillColor: getColor(feature.cnt2016)
 		});
 		layer.on({
 			mouseover: highlightFeature,
@@ -172,23 +148,6 @@
 
 		return inside;
 	};
-
-	/*
-	for (var i = 0; i < result.data.length; i ++) {
-		var countHomeless = result.data[i].cnt2016;
-		var bbox = result.data[i].bbox;
-		var y = (bbox[0] + bbox[2]) / 2;
-		var x = (bbox[1] + bbox[3]) / 2;
-		var radius = countHomeless*100;
-		var data = [y, x];
-		for (var i = 0; i < polygons.length; i ++) {
-			if (inside(data, polygons[i])) {
-				console.log("inside");
-				break;
-			}
-		}
-	}
-	*/
 
 	geojson = L.geoJson(statesData, {
 		style: style,
