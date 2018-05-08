@@ -1,3 +1,23 @@
+"""
+CCC Team 42, Melbourne
+
+Thuy Ngoc Ha		963370
+Lan Zhou			824371
+Zijian Wang			950618			
+Ivan Chee			736901
+Duer Wang			824325
+			
+"""
+"""
+A python file used for making predictions on tweeters that lack food information or homeless
+information.
+
+Using random forest classification model for predicting food.
+Using random forest regression model for predicting homeless and homeless trend.
+
+To invoke: python rf_model.py
+"""
+
 import sys
 import os
 import httplib2
@@ -14,6 +34,8 @@ from pyspark.sql.functions import udf
 from pyspark.sql.types import *
 from keywords import Keywords
 
+
+# set up spark environment
 os.environ['SPARK_HOME'] = "spark"
 sys.path.append("spark/python")
 sys.path.append("spark/python/lib")
@@ -35,6 +57,11 @@ rev_dict = {}
 food_pre = False
 homeless_pre = False
 
+"""
+---------------------------------------------------------
+------------------ Auxiliary Functions ------------------
+---------------------------------------------------------
+"""
 
 # get coordinates of a given city
 def cityPos(name):
@@ -45,8 +72,9 @@ def cityPos(name):
     res = json.loads(content)
     return res["results"][0]["geometry"]
 
-# reform the data preparing for fitting the model
+# read data from couchdb and reform them to read easier
 def trans(path):
+
     con = Couch(COUCHDB_NAME)
     jsonData = con.query_all()
 
@@ -79,7 +107,7 @@ def trans(path):
         # to ensure at least one of homeless info and food info appears
         home = dic['homeless']
         foods = dic['food_list']
-        if home is None and foods is None:
+        if (home is None) and (foods is None or len(foods) == 0):
             continue
         
         # get homeless information
@@ -115,6 +143,7 @@ def trans_month(month):
                  'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
     return month_dic[month]
 
+# transform food name into food classes that are integers
 def get_food_class(food):
     if not food in food_dict.keys():
         food_dict[food] = str(len(food_dict))
@@ -148,20 +177,31 @@ def get_food_group(food):
     return None
 
 
+"""
+---------------------------------------------------------
+--------------------- Main Function ---------------------
+---------------------------------------------------------
+"""
 
 if __name__ == "__main__":
     
+    # create spark session
     spark = SparkSession.builder.appName(APP_NAME) \
             .master(SPARK_URL).getOrCreate()
             
-    # read data from couchdb and reform them into a dataframe
+"""
+---------- data preparation ----------
+"""           
+    # read data from couchdb
     trans(REFORMED_FILE)
 
+    # reform data into a dataframe
     df = spark.read.options(header = "true", inferschema = "true")\
             .csv(REFORMED_FILE)
 
     print("\nTotal number of rows loaded: %d" % df.count())
     
+    # remove duplicated entries
     df = df.drop_duplicates()
     print("\nTotal number of rows without duplicates: %d" % df.count())
     df.show()
@@ -175,11 +215,12 @@ if __name__ == "__main__":
     print("number of rows without food information: %d" % df_no_food.count())
     print("number of rows without homeless information: %d" % df_no_homeless.count())
             
-    # transform dataframe into RDD and split reformed data into tranning data and test data
+    # transform dataframe into RDD 
     transformed_df_food = df_all_info.rdd.map(lambda row: LabeledPoint(row[-1], Vectors.dense(row[2:-1])))
     transformed_df_homeless = df_all_info.rdd.map(lambda row: LabeledPoint(row[-3], Vectors.dense(row[2],row[3],row[4],row[5],row[6],row[7],row[10])))
     transformed_df_homeless_trend = df_all_info.rdd.map(lambda row: LabeledPoint(row[-2], Vectors.dense(row[2],row[3],row[4],row[5],row[6],row[7],row[10])))
 
+    # split reformed data into tranning data and test data
     splits = [TRAINING_DATA_RATIO, 1.0 - TRAINING_DATA_RATIO]
     training_data_food, test_data_food = transformed_df_food.randomSplit(splits, RANDOM_SEED)
     training_data_homeless, test_data_homeless = transformed_df_homeless.randomSplit(splits, RANDOM_SEED)
@@ -188,6 +229,9 @@ if __name__ == "__main__":
     print("\nNumber of training set rows: %d" % training_data_food.count())
     print("Number of test set rows: %d" % test_data_food.count())
     
+"""
+---------- model training ----------
+"""
     # train the classification model using training data
     start_time = t.time()
     num_classes = len(food_dict)
@@ -235,7 +279,10 @@ if __name__ == "__main__":
     print("\nFood classifier accuracy: %.3f%%" % (food_acc * 100))
     print("Homeless regressor accuracy: %.3f%%" % (homeless_acc * 100))
     print("Homeless trend regressor accuracy: %.3f%%" % (homeless_trend_acc * 100))
-    
+   
+"""
+---------- make predictions ----------
+""" 
     food_pre = df_no_food.count() > 0
     homeless_pre = df_no_homeless.count() > 0
 
@@ -251,7 +298,7 @@ if __name__ == "__main__":
         predict_homeless = model_homeless_regressor.predict(transformed_df_no_homeless.map(lambda x: x.features))
         predict_homeless_trend = model_homeless_trend_regressor.predict(transformed_df_no_homeless_trend.map(lambda x: x.features))
     
-    # combine id with predictions
+    # zip id with predictions preparing for joining data
     if food_pre:
         rdd_predict_foods = df_no_food.rdd.map(lambda row: row[0]).zip(predict_foods.map(int))
         list_predict_foods = rdd_predict_foods.collect()
@@ -260,8 +307,11 @@ if __name__ == "__main__":
         rdd_predict_homeless_trend = df_no_homeless.rdd.map(lambda row: row[0]).zip(predict_homeless_trend.map(int))
         list_predict_homeless = rdd_predict_homeless.collect()
         list_predict_homeless_trend = rdd_predict_homeless_trend.collect()
-    
-    # transform predicted rdd to dataframe and join it to original data that without food
+
+"""
+---------- join predictions to original data
+"""
+    # transform predicted rdd to dataframe
     if food_pre:
         df_predict_foods = spark.createDataFrame(list_predict_foods, schema=["id","food_class"])
         df_no_food = df_no_food.drop('food_class')
@@ -274,11 +324,9 @@ if __name__ == "__main__":
         df_no_homeless = df_no_homeless.drop('homeless').drop('homeless_trend')
         concat_df_homeless = df_no_homeless.join(df_predict_homeless, on='id').join(df_predict_homeless_trend, on='id')
             
-
     generate_rev_dict()
     
     get_food_type_udf = udf(get_food_type, StringType())
-
     get_food_group_udf = udf(get_food_group, StringType())
 
     df_all_info = df_all_info.withColumn('food', get_food_type_udf(df_all_info['food_class']))
@@ -308,6 +356,9 @@ if __name__ == "__main__":
     print("\nTotal number of rows of final data: %d" % (union_df.count()))
     union_df.show()
     
+"""
+---------- transform dataframe into json preparing for inserting back to couchdb
+"""
     json_data = union_df.toJSON()
     
     # insert data into couchdb

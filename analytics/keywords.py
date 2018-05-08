@@ -1,4 +1,13 @@
+"""
+CCC Team 42, Melbourne
 
+Thuy Ngoc Ha		963370
+Lan Zhou			824371
+Zijian Wang			950618			
+Ivan Chee			736901
+Duer Wang			824325
+			
+"""
 class Keywords:
     
     fastfood = [

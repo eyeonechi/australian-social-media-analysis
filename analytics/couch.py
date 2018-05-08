@@ -1,3 +1,14 @@
+"""
+CCC Team 42, Melbourne
+
+Thuy Ngoc Ha		963370
+Lan Zhou			824371
+Zijian Wang			950618			
+Ivan Chee			736901
+Duer Wang			824325
+			
+"""
+
 from cloudant.client import CouchDB
 from cloudant.database import CloudantDatabase
 from cloudant.document import Document
