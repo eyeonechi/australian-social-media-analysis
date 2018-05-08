@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Bug-Demo dynamic Marker</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="http://leaflet.cloudmade.com/dist/leaflet.css">
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.4/leaflet.js"></script>
+
+    <script src="http://cdn.jqmobi.com/1.1/jq.mobi.min.js"></script>
+
+	<link rel="stylesheet" href="../dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="../dist/MarkerCluster.Default.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/MarkerCluster.Default.ie.css" /><![endif]-->
+	<script src="../src/DistanceGrid.js"></script>
+	<script src="../src/MarkerCluster.js"></script>
+	<script src="../src/MarkerClusterGroup.js"></script>
+	<script src="../src/MarkerCluster.QuickHull.js"></script>
+	<script src="../src/MarkerCluster.Spiderfier.js"></script>
+
+</head>
+<body>
+
+    <div id="map" style="width: 480px; height: 640px; position: absolute;"></div>
+
+
+    <script>
+
+        var map = new L.Map('map', {
+            attributionControl: false,
+            trackResize: false,
+            center: new L.LatLng(52.518512,13.376176),
+            zoom: 15,
+            minZoom: 1,
+            maxZoom: 18,
+            zoomControl: false,
+            fadeAnimation: true,
+            zoomAnimation: true,
+            markerZoomAnimation: true
+        });
+
+        L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg',    
+            {
+                maxZoom: 18,
+                subdomains: '1234',
+                attribution: ''
+            }).addTo(map);
+
+    </script>
+
+
+    <script>
+
+        function moveMarker(m) {
+
+            var vLat = Math.random() * diffHeight;
+            var vLon = Math.random() * diffWidth;
+
+            m.lat = m.lat + (vLat - diffHeight/2);
+            m.lon = m.lon + (vLon - diffWidth/2);
+
+            return m;
+        }
+
+
+        function startTimer() {
+
+            /** clear any running timer */
+            clearTimeout(request);
+
+            /** get marker for boundingbox */
+            request = setTimeout(getMarker, 2000);
+
+        }
+
+
+        function getMarker() {
+
+            /** current bounds */
+            var bounds = map.getBounds();
+
+            /** iterate over webservice-known marker */
+            $.each(marker_all, function(index, m) {
+
+                /** move some marker a little bit */
+                if (getMoveDecision(0.2)) {
+                    marker_all[i] = moveMarker(m);
+                }
+
+                /** add marker internally if its in the boundingbox */
+                //if (bounds.contains(new L.LatLng(m.lat, m.lon))) {
+                    addMarker(m);
+                //}
+
+            });
+        }
+
+        function addMarker(m) {
+
+            /** already saved -> update */
+            if (m.id && marker_map[m.id]) {
+                updateMarker(m);
+                return;
+            }
+
+            var marker = new L.Marker([m.lat, m.lon]);
+
+            /** add new object under key: id */
+            marker_map[m.id] = {marker: marker, id: m.id};
+
+            /** add marker to map */
+            markergroup.addLayer(marker);
+        }
+
+
+        function updateMarker(m) {
+            updateMarkerPosition(marker_map[m.id], new L.LatLng(m.lat, m.lon));
+        }
+
+
+        function updateMarkerPosition(m, latlng) {
+
+            //m.marker.setLatLng(latlng);
+
+            /** remove it from layergroup */
+            markergroup.removeLayer(m.marker);
+
+            /** readd the marker to the layergroup */
+            markergroup.addLayer(m.marker);
+        }
+
+
+        function getRandomLatLng() {
+            var bounds = markerBounds,
+                southWest = bounds.getSouthWest(),
+                northEast = bounds.getNorthEast(),
+                lngSpan = northEast.lng - southWest.lng,
+                latSpan = northEast.lat - southWest.lat;
+
+            return new L.LatLng(
+                southWest.lat + latSpan * Math.random(),
+                southWest.lng + lngSpan * Math.random());
+        }
+
+
+        /** threshold: how many percent of marker should be moved randomly */
+        function getMoveDecision(threshold) {
+            return (Math.random() < threshold) ? true : false;
+        }
+
+
+        function mapDragEnd() {
+            startTimer();
+        }
+
+    </script>
+
+
+    <script>
+
+        /** group */
+        var markergroup = new L.MarkerClusterGroup({
+                /*disableClusteringAtZoom: 14,*/
+                maxClusterRadius: 80,
+                spiderfyOnMaxZoom: false,
+                showCoverageOnHover: false,
+                zoomToBoundsOnClick: false,
+                animateAddingMarkers: false
+        });
+        map.addLayer(markergroup);
+
+        /** marker: marker_all: simulated webservice, marker_map: known marker by the application */
+        var marker_all = {};
+        var marker_map = {};
+
+        /** marker area */
+        var markerBounds = new L.LatLngBounds([52.547131,13.318468], [52.463959,13.495966]);
+
+        /** generate random movement values */
+        var sw = markerBounds._southWest;
+        var ne = markerBounds._northEast;
+        var diffHeight = Math.abs(sw.lat - ne.lat) * 0.05;
+        var diffWidth = Math.abs(sw.lng - ne.lng) * 0.05;
+
+        /** request timer */
+        var request = 0;
+
+        /** generate all marker */
+        for (var i=0; i<600; i++) {
+            var latlng = getRandomLatLng();
+            marker_all[i] = {lat: latlng.lat, lon: latlng.lng, id: i};
+        }
+
+
+        map.on('dragend', mapDragEnd);
+        map.on('zoomend', mapDragEnd);
+
+
+        /** init the first request */
+        startTimer();
+
+    </script>
+</body>
+</html>

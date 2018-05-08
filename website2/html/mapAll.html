@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset= "UTF-8" />
+	<title>Australian Map of Foods</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+	<script type ="text/javascript" src="/js/Couch.js"></script>
+	<script src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+	<link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+	<script src="../Leaflet.markercluster-0.2/dist/leaflet.markercluster.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+	<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+	<style>
+		body {
+		  margin: 0;
+		  padding :0;
+		}
+		.map {
+		  position: absolute;
+		  top: 0;
+		  bottom: 0;
+		  width: 100%;
+		}
+		.leaflet-popup {
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+<!--map container-->
+<div id='map-leaflet' class='map'> </div>
+<!--end map container-->
+<script>
+//map initiation
+	L.mapbox.accessToken = 'pk.eyJ1IjoiaGFubmFobmdvYyIsImEiOiJjamc3Z2ZldDUwMjc4Mndwam9wZWNqZG5rIn0.Qj8OvcCuEytwM9tAXakxpQ';
+	var mapLeaflet = L.mapbox.map('map-leaflet', 'mapbox.streets')
+	  .setView([-37.814, 144.96332], 5);
+//end map initiation
+
+//image markers
+var meatIcon = L.icon({
+    iconUrl: '/images/googleIcons/ms_steak.png',
+    iconSize:     [30, 30], // size of the icon
+});
+var fastfoodIcon = L.icon({
+    iconUrl: '/images/googleIcons/ms_pizza.png',
+    iconSize:     [30, 30], // size of the icon
+});
+var fruitIcon = L.icon({
+    iconUrl: '/images/googleIcons/ms_strawberry.png',
+    iconSize:     [30, 30], // size of the icon
+});
+var vegIcon = L.icon({
+    iconUrl: '/images/googleIcons/ms_broccoli.png',
+    iconSize:     [30, 30], // size of the icon
+});
+var seafoodIcon = L.icon({
+    iconUrl: '/images/googleIcons/crab.png',
+    iconSize:     [30, 30], // size of the icon
+});
+var grainIcon = L.icon({
+    iconUrl: '/images/googleIcons/corn.png',
+    iconSize:     [30, 30], // size of the icon
+});
+//end image
+
+setTimeout(function(){
+//get data from server  
+	var couch = new Couch();
+	//var db_names = ["prediction11885", "test002"];
+	var db_name = "homeless";
+	var markers = new L.MarkerClusterGroup();
+	var result = couch.query_all(db_name);
+	console.log(result);
+	if (result === undefined) {
+		console.log("Cannot GET data from: " + db_name);
+	} else {
+		for (var i = 0; i < result.data.length; i ++) {
+			var countHomeless = result.data[i].cnt2016;
+			var bbox = result.data[i].bbox;
+			var y = (bbox[0] + bbox[2]) / 2;
+			var x = (bbox[1] + bbox[3]) / 2;
+			var radius = countHomeless*100;
+			var data = [x, y];
+			L.circle(data,{
+				color: 'red',
+				opacity: 0.05,
+				fillColor: 'red',
+				fillOpacity: 0.1,
+				radius: radius
+			}).addTo(mapLeaflet);
+		}
+		//mapLeaflet.addLayer(markers);
+	}
+},200);
+
+function foo(result, markers) {
+	var color;
+	if(result === undefined) {
+		console.log("Cannot GET data from: " +db_name);
+	} else {
+		result.data[0].features.forEach(function(point) {
+			switch(point.properties.food_group) {
+				case 'fastfood':
+					color = fastfoodIcon;
+					break;
+				case 'fruits':
+					color = fruitIcon;
+					break;
+				case 'grains':
+					color = grainIcon;
+					break;
+				case 'meat':
+					color = meatIcon;
+					break;
+				case 'seafood':
+					color = seafoodIcon;
+					break;
+				case 'vegetables':
+					color = vegIcon;
+					break;	
+				default:
+					color = redIcon;
+					console.log("Invalid food group");
+					break;
+			}
+			markers.addLayer(L.marker(point.geometry.coordinates,{
+				icon: color
+			}).bindPopup("Food: "+JSON.stringify(point.properties.food)));
+		});
+		mapLeaflet.addLayer(markers);
+	}
+}
+
+</script>
+</body>
+</html>
