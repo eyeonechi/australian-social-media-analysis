@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<style>
+	body {
+	  margin: 0;
+	  font-family: Arial, Helvetica, sans-serif;
+	}
+
+	.topnav {
+	  overflow: hidden;
+	  background-color: #333;
+	}
+
+	.topnav a {
+	  float: left;
+	  color: #f2f2f2;
+	  text-align: center;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  font-size: 17px;
+	}
+
+	.topnav a:hover {
+	  background-color: #ddd;
+	  color: black;
+	}
+
+	.topnav a.active {
+	  background-color: #ffff00;
+	  color: black;
+	}
+	</style>
+</head>
+<body>
+	
+	<!-- Menu bar division -->
+	<div class="topnav">
+	  <a class="active" href="../index.html">Home</a>
+	  <a href="pieChart.html">Pie Chart</a>
+	  <a href="barChart.html">Bar Chart</a>
+	  <a href="graph.html">Graph</a>
+	</div>
+	
+	<!-- Chart and Graph division: https://developers.google.com/chart/interactive/docs/gallery -->
+	<div style="padding-left:16px">
+	  <h2>Food Consumption in Australian Cities</h2>
+	</div>
+	  <div id="chart_div"></div>
+	<!-- Chart and Graph division -->
+	
+	<!-- Load data -->
+	<script type="text/javascript">
+			// Load the Visualization API and the piechart package.
+		google.charts.load('current', {'packages':['corechart']});
+		  
+		// Set a callback to run when the Google Visualization API is loaded.
+		google.charts.setOnLoadCallback(drawChart);
+		  
+		function drawChart() {
+			var jsonData = $.ajax({
+			  url: "../geojson/sampleData2.json",
+			  dataType: "json",
+			  async: false
+			  }).responseText;  
+		  // Create our data table out of JSON data loaded from server.
+		  var data = new google.visualization.DataTable(jsonData);
+
+		  // Instantiate and draw our chart, passing in some options.
+		  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+		  chart.draw(data, {width: 800, height: 500});
+		}
+	/*
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+	google.charts.setOnLoadCallback(drawMultSeries);
+
+	function drawMultSeries() {
+		  var data = google.visualization.arrayToDataTable([
+			['City', '2010 Population', '2000 Population'],
+			['New York City, NY', 8175000, 8008000],
+			['Los Angeles, CA', 3792000, 3694000],
+			['Chicago, IL', 2695000, 2896000],
+			['Houston, TX', 2099000, 1953000],
+			['Philadelphia, PA', 1526000, 1517000]
+		  ]);
+
+		  var options = {
+			title: 'Population of Largest U.S. Cities',
+			chartArea: {width: '50%'},
+			hAxis: {
+			  title: 'Total Population',
+			  minValue: 0
+			},
+			vAxis: {
+			  title: 'City'
+			}
+		  };
+
+		  var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+		  chart.draw(data, options);
+		}
+*/
+    </script>
+</body>
+</html>
