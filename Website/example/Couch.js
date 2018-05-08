@@ -18,6 +18,7 @@ function Couch(){
         return result;
     };
 
+    /*Get all data stored in one database.*/
     this.query_all = function(db_name){
         var result;
         $.ajax({
@@ -32,5 +33,22 @@ function Couch(){
             }
         });
         return result;
-    }
+    };
+
+    /*Get data in custom aggregated map-reduced view*/
+    this.query_stat = function(db_name){
+        var result;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "http://115.146.85.206:5000/databate/" + db_name + "/aggregation",
+            ContentType: "application/json",
+            data: {},
+            dataType: "json",
+            success: function(data) {
+                result = data;
+            }
+        });
+        return result;
+    };
 }

@@ -14,7 +14,10 @@
 
 	var selector = {"lang": "en"};
 	var result2 = couch.query("classified1", selector);
-	console.log(result2)
+	console.log(result2);
+
+    var result3 = couch.query_stat("classified1");
+	console.log(result3);
 </script>
 </body>
 </html>
