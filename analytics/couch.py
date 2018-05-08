@@ -1,4 +1,16 @@
 """
+<<<<<<< HEAD
+CCC Team 42, Melbourne
+
+Thuy Ngoc Ha    963370
+Lan Zhou		824371
+Zijian Wang		950618			
+Ivan Chee		736901
+Duer Wang       824325
+			
+"""
+
+=======
 @Team info:
     CCC Team 42 (Melbourne)
     Hannah Ha   963370
@@ -20,6 +32,7 @@
     aggr_sentiment_analysis: get result from a map&reduced custom view.
                              View details are in MapReduce.js
 """
+>>>>>>> 726cd361e1c39cc499eb0716f41b9c68221bdf32
 from cloudant.client import CouchDB
 from cloudant.database import CloudantDatabase
 from cloudant.document import Document
