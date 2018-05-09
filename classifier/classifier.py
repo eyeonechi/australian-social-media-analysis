@@ -95,10 +95,8 @@ def fil(tweet,features,loc,aurin): #input a single tweet, features needed, locat
                 except TranslateError:
                     text = str(text)
             food_list = find_food(text)
-            if food_list:
-                doc.update({'food_list':food_list})
-            else:
-                doc.update({'food_list':None})
+            doc.update({'food_list':food_list})
+            
             score = analyser.polarity_scores(text)['compound'] #sentiment analysis
             doc.update({'polarity':score}) #update sentiment score
 
