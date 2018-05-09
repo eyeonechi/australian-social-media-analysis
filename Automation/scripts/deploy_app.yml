@@ -26,25 +26,25 @@
       state: latest
       update_cache: yes
 
+  - name: Install git
+    apt:
+      name: git
+      state: latest
+      update_cache: yes
+
   - name: Creates directory ~/CCC42
     file: path=/home/ubuntu/CCC42 state=directory
-
-  - name: copy application to user directory
-    copy:
-      src: ../../app.tar.gz
-      dest: /home/ubuntu/CCC42/app.tar.gz
-      owner: ubuntu
-      group: ubuntu
-      mode: 0777
 
   - name: Creates directory ~/CCC42/application
     file: path=/home/ubuntu/CCC42/application state=directory
 
-  - name: Unarchive application package
-    unarchive:
-      src: /home/ubuntu/CCC42/app.tar.gz
-      dest: /home/ubuntu/CCC42/application
-      remote_src: yes
+  - name: Create directory ~/CCC42/application/comp90024-team-42-master
+    file: path=/home/ubuntu/CCC42/application/comp90024-team-42-master state=directory
+
+  - name: copy application to user directory
+    git:
+      repo: https://github.com/eyeonechi/comp90024-team-42.git
+      dest: /home/ubuntu/CCC42/application/comp90024-team-42-master
 
   - name: Install Apache2
     apt:
