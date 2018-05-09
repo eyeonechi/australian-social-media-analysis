@@ -1,0 +1,67 @@
+- hosts: database,analyser,harvester
+  remote_user: ubuntu
+  sudo: yes
+  tasks:
+  - name: Remove apt lock
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - /var/lib/apt/lists/lock
+      - /var/cache/apt/archives/lock
+      - /var/lib/dpkg/lock
+
+  - name: Install python3-setuptools
+    apt:
+      name:  python3-setuptools
+      state: latest
+      update_cache: yes
+
+  - name: Install python3-pip
+    command: easy_install3 pip
+
+  - name: Install python2-pip
+    apt:
+      name: python-pip
+      state: latest
+      update_cache: yes
+
+  - name: Creates directory ~/CCC42
+    file: path=/home/ubuntu/CCC42 state=directory
+
+  - name: copy application to user directory
+    copy:
+      src: ../../app.tar.gz
+      dest: /home/ubuntu/CCC42/app.tar.gz
+      owner: ubuntu
+      group: ubuntu
+      mode: 0777
+
+  - name: Creates directory ~/CCC42/application
+    file: path=/home/ubuntu/CCC42/application state=directory
+
+  - name: Unarchive application package
+    unarchive:
+      src: /home/ubuntu/CCC42/app.tar.gz
+      dest: /home/ubuntu/CCC42/application
+      remote_src: yes
+
+  - name: Install Apache2
+    apt:
+      name: apache2
+      state: latest
+      update_cache: yes
+
+  - name: Install Unzip
+    apt:
+      name: unzip
+      state: latest
+
+  - name: Download geo_info.zip geography information data
+    get_url:
+      url: "https://drive.google.com/uc?export=download&id=13hXWOpikjRVmSnIywaiPIgu1aJv291gA"
+      dest: /home/ubuntu/CCC42/application/comp90024-team-42-master/classifier/geo_info.zip
+
+  - name: unzip geo_info.zip
+    command: unzip /home/ubuntu/CCC42/application/comp90024-team-42-master/classifier/geo_info.zip -d /home/ubuntu/CCC42/application/comp90024-team-42-master/classifier/
+    

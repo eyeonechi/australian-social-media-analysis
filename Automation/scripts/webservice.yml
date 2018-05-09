@@ -1,0 +1,12 @@
+- hosts: database
+  remote_user: ubuntu
+  sudo: yes
+  tasks:
+
+  - name: Install flask
+    pip:
+      name: flask
+      executable: pip3
+
+  - name: Copy webpages to /var/www/html
+    shell: cp -rf /home/ubuntu/CCC42/application/comp90024-team-42-master/Website/* /var/www/html

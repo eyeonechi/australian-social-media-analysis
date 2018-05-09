@@ -1,0 +1,9 @@
+- hosts: harvester
+  remote_user: ubuntu
+  sudo: yes
+  tasks:
+  - name: Install dependencies for python
+    pip:
+      name:
+      - cloudant
+      - tweepy

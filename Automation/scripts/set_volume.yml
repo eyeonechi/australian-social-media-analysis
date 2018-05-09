@@ -1,0 +1,18 @@
+- hosts: database,analyser,harvester
+  remote_user: ubuntu
+  sudo: yes
+  tasks:
+  - name: Set disk format(ext4)
+    filesystem:
+      fstype: ext4
+      dev: /dev/vdc
+
+  - name: Creates directory /opt/couchdb
+    file: path=/opt/couchdb state=directory
+
+  - name: Mount new disk as /opt/couchdb
+    mount:
+      name: /opt/couchdb
+      src: /dev/vdc
+      fstype: ext4
+      state: mounted
