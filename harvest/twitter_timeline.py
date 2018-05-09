@@ -6,6 +6,8 @@ Team 42
 twitter_timeline.py
 """
 
+import json
+import re
 import tweepy
 
 from util.argument import Argument
@@ -29,12 +31,18 @@ def main():
 
     with open(args.input, "r") as input:
         with open(args.output, "a") as output:
-            for line in input:
-                screen_name = '@' + line
-                print("\ntimeline user: " + screen_name)
-                for status in tweepy.Cursor(api.user_timeline, screen_name=screen_name).items():
-                    print status._json['text']
-                    out.write(status)
+            with open(args.output2, "a") as useroutput:
+                for line in input:
+                    screen_name = '@' + line
+                    print("\ntimeline user: " + screen_name)
+                    for status in tweepy.Cursor(api.user_timeline, screen_name=screen_name).items():
+                        text = json.dumps(status._json['text'])
+                        regex = re.compile(r'(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9_]+)', re.UNICODE)
+                        mentions = regex.findall(text)
+                        print(text)
+                        output.write(json.dumps(status._json) + '\n')
+                        for mention in mentions:
+                            useroutput.write(mention + '\n')
 
 if __name__ == '__main__':
     main()

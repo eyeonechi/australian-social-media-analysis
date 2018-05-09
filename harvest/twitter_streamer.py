@@ -37,7 +37,7 @@ class TwitterStreamListener(StreamListener):
         #self.conn.insert(json_data)
         mentions = []
         print(data)
-        '''
+
         if "text" in json_data:
             print(json.dumps(json_data["text"]))
             regex = re.compile(r'(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9_]+)', re.UNICODE)
@@ -54,8 +54,7 @@ class TwitterStreamListener(StreamListener):
             if "user" in json_data["retweeted_status"]:
                 if "id_str" in json_data["retweeted_status"]["user"]:
                     print("retweeted_status_user_id" + json_data["retweeted_status"]["user"]["id_str"])
-        '''
-        '''
+
         try:
             with open(self.outfile, "a") as f:
                 f.write(data)
@@ -64,14 +63,6 @@ class TwitterStreamListener(StreamListener):
                     f.write(mention + '\n')
         except BaseException as e:
             print("Error on_data: %s" % str(e))
-        '''
-        #To get user screen name from user id
-        #user = api.get_user(1088398616)
-        #user.screen_name
-
-        #To get user id from user screen name
-        #user = api.get_user(screen_name = 'saimadhup')
-        #print(user.id)
         return True
 
     def on_error(self, status):
@@ -115,17 +106,12 @@ def main():
     # Arguments parsing
     args = Argument().get_args()
     config = Config(args.config, args.auth).get_config()
-    auth = Authentication(config)
+    auth = Authentication(config).get_auth()
     api = tweepy.API(auth)
     listener = TwitterStreamListener(args.directory, args.query)
     stream = Stream(auth, listener)
 
-    # Bounding box
-    bounding_box = [113.338953078, -43.6345972634, 153.569469029, -10.6681857235]
-    print("boundary: ", bounding_box)
-    #stream.filter(locations=bounding_box);
-
-'''
+    # If query matches that of food in keywords, search by keyword
     if (args.query == "fastfood"):
         stream.filter(track=[word for word in Keywords.fastfood])
     elif (args.query == "fruits"):
@@ -138,7 +124,11 @@ def main():
         stream.filter(track=[word for word in Keywords.seafood])
     elif (args.query == "vegetables"):
         stream.filter(track=[word for word in Keywords.vegetables])
-'''
+    # Else, search by bounding box
+    else:
+        bounding_box = config.get_bounding_box();
+        print("boundary: ", bounding_box)
+        stream.filter(locations=bounding_box);
 
 if __name__ == '__main__':
     main()
