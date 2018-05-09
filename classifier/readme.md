@@ -1,3 +1,5 @@
+### run it with:  
+python3 classifier.py '*input db name*' '*output db name*'
 ### install
 pip install vaderSentiment  
 pip install shapely  
