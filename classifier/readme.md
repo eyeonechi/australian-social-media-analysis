@@ -8,4 +8,4 @@ pip install Cloudant
 
 map files can be downloaded from:
 
-https://drive.google.com/file/d/13hXWOpikjRVmSnIywaiPIgu1aJv291gA/view?usp=sharing
+https://drive.google.com/uc?export=download&id=13hXWOpikjRVmSnIywaiPIgu1aJv291gA
