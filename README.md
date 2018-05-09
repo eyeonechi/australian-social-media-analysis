@@ -26,3 +26,6 @@ https://drive.google.com/drive/u/1/folders/1MzVgaO9dU0N9MgjtxaFy25HodDHQbXq5
 ## CouchDB Database
 ### 115.146.85.206:5984
 ### 115.146.85.206:5000 (Web)
+
+## Ready-to-run Website
+## http://115.146.85.206/index.html
