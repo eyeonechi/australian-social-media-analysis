@@ -189,9 +189,10 @@ if __name__ == "__main__":
     spark = SparkSession.builder.appName(APP_NAME) \
             .master(SPARK_URL).getOrCreate()
             
-"""
----------- data preparation ----------
-"""           
+    """
+    ---------- data preparation ----------
+    """
+            
     # read data from couchdb
     trans(REFORMED_FILE)
 
@@ -229,9 +230,9 @@ if __name__ == "__main__":
     print("\nNumber of training set rows: %d" % training_data_food.count())
     print("Number of test set rows: %d" % test_data_food.count())
     
-"""
----------- model training ----------
-"""
+    """
+    ---------- model training ----------
+    """
     # train the classification model using training data
     start_time = t.time()
     num_classes = len(food_dict)
@@ -280,9 +281,9 @@ if __name__ == "__main__":
     print("Homeless regressor accuracy: %.3f%%" % (homeless_acc * 100))
     print("Homeless trend regressor accuracy: %.3f%%" % (homeless_trend_acc * 100))
    
-"""
----------- make predictions ----------
-""" 
+    """
+    ---------- make predictions ----------
+    """ 
     food_pre = df_no_food.count() > 0
     homeless_pre = df_no_homeless.count() > 0
 
@@ -308,9 +309,9 @@ if __name__ == "__main__":
         list_predict_homeless = rdd_predict_homeless.collect()
         list_predict_homeless_trend = rdd_predict_homeless_trend.collect()
 
-"""
----------- join predictions to original data
-"""
+    """
+    ---------- join predictions to original data
+    """
     # transform predicted rdd to dataframe
     if food_pre:
         df_predict_foods = spark.createDataFrame(list_predict_foods, schema=["id","food_class"])
@@ -356,9 +357,9 @@ if __name__ == "__main__":
     print("\nTotal number of rows of final data: %d" % (union_df.count()))
     union_df.show()
     
-"""
----------- transform dataframe into json preparing for inserting back to couchdb
-"""
+    """
+    ---------- transform dataframe into json preparing for inserting back to couchdb
+    """
     json_data = union_df.toJSON()
     
     # insert data into couchdb
