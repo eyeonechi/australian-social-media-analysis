@@ -95,10 +95,8 @@ def fil(tweet,features,loc,aurin): #input a single tweet, features needed, locat
                 except TranslateError:
                     text = str(text)
             food_list = find_food(text)
-            if food_list:
-                doc.update({'food_list':food_list})
-            else:
-                doc.update({'food_list':None})
+            doc.update({'food_list':food_list})
+            
             score = analyser.polarity_scores(text)['compound'] #sentiment analysis
             doc.update({'polarity':score}) #update sentiment score
 
@@ -260,13 +258,7 @@ def main(input_db,output_db,action):
             aus = False
         if aus == True:
             filtered = fil(tweet,features,loc,aurin)
-            if action == 'print':
-                print (filtered)
-            elif action == 'insert':
-                classified.insert(filtered)
-            else:
-                print ('invalid action arg')
-                break
+            classified.insert(filtered)
             inserted += 1
 
     print('classification finished')
@@ -279,4 +271,4 @@ def main(input_db,output_db,action):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1],sys.argv[2],sys.argv[3])
+    main(sys.argv[1],sys.argv[2])

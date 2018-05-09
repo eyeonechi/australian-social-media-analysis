@@ -27,3 +27,6 @@ class Config:
 
     def get_access_secret(self):
         return self.access_secret
+
+    def get_bounding_box(self):
+        return [113.338953078, -43.6345972634, 153.569469029, -10.6681857235]

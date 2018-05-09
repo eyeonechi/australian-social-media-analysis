@@ -68,13 +68,38 @@ var grainIcon = L.icon({
 setTimeout(function(){
 //get data from server  
 	var couch = new Couch();
-	var db_names = ["prediction11885"];
+	//var db_names = ["prediction11885", "test002"];
+	var db_name = "homeless";
 	var markers = new L.MarkerClusterGroup();
-	
-	for (var i = 0; i < db_names.length; i ++) {
-		foo(couch.query_all(db_names[i]), markers);
+	var result = couch.query_all(db_name);
+	console.log(result);
+	if (result === undefined) {
+		console.log("Cannot GET data from: " + db_name);
+	} else {
+		for (var i = 0; i < result.data.length; i ++) {
+			var countHomeless = result.data[i].cnt2016;
+			var trend = result.data[i].cnt2016 - result.data[i].cnt2011;
+			var bbox = result.data[i].bbox;
+			var y = (bbox[0] + bbox[2]) / 2;
+			var x = (bbox[1] + bbox[3]) / 2;
+			var radius = countHomeless*100;
+			var data = [x, y];
+			var color;
+			if (trend>0) 
+				color='red';
+			else
+				color='green';
+			L.circle(data,{
+				color: color,
+				opacity: 0.05,
+				fillColor: color,
+				fillOpacity: 0.1,
+				radius: radius
+			}).addTo(mapLeaflet);
+		}
+		//mapLeaflet.addLayer(markers);
 	}
-},400);
+},200);
 
 function foo(result, markers) {
 	var color;

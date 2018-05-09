@@ -5,7 +5,7 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type ="text/javascript" src="../js/Couch.js"></script>
 	<style>
 	body {
 	  margin: 0;
@@ -42,39 +42,60 @@
 	<!-- Menu bar division -->
 	<div class="topnav">
 	  <a class="active" href="../index.html">Home</a>
+	  <!--
 	  <a href="pieChart.html">Pie Chart</a>
 	  <a href="barChart.html">Bar Chart</a>
+	  -->
 	  <a href="graph.html">Graph</a>
 	</div>
 	
-	<!-- Chart and Graph division: https://developers.google.com/chart/interactive/docs/gallery -->
+	<!-- Chart and Graph division: https://developers.google.com/chart/interactive/docs/gallery-->
 	<div style="padding-left:16px">
-	  <h2>Food Consumption in Australian Cities</h2>
+	  <h2>Sentiment Analysis for Australian Cities</h2>
 	</div>
 	  <div id="chart_div"></div>
 	<!-- Chart and Graph division -->
 	
 	<!-- Load data -->
 	<script type="text/javascript">
-			// Load the Visualization API and the piechart package.
 		google.charts.load('current', {'packages':['corechart']});
-		  
-		// Set a callback to run when the Google Visualization API is loaded.
-		google.charts.setOnLoadCallback(drawChart);
-		  
+			google.charts.setOnLoadCallback(drawChart);
+				
 		function drawChart() {
-			var jsonData = $.ajax({
-			  url: "../geojson/sampleData2.json",
-			  dataType: "json",
-			  async: false
-			  }).responseText;  
-		  // Create our data table out of JSON data loaded from server.
-		  var data = new google.visualization.DataTable(jsonData);
+			var couch = new Couch();
 
-		  // Instantiate and draw our chart, passing in some options.
-		  var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-		  chart.draw(data, {width: 800, height: 500});
+			var db_name = "classified1";
+
+			var result = couch.query_stat(db_name);
+				
+			if (result === undefined) {
+				console.log("Cannot GET data from: " + db_name);
+			}else {
+				var keys = Object.keys(result.data);
+				var table = new google.visualization.DataTable();
+		
+				table.addColumn('string', 'Time');
+				table.addColumn('number', 'Happiness Index');
+				for (var i = 0; i < keys.length; i ++) {
+					table.addRow([keys[i], result.data[keys[i]].avg]);
+				}
+				
+				console.log(table);
+				var container = document.getElementById('chart_div');
+				container.innerHTML = "";
+				var chart = new google.visualization.LineChart(container); 
+				chart.draw(table, {width: 800, height: 300, is3D: true, title: 'Sentiment Analysis',
+								  legend:'none', titleX:'Time of the Day', titleY:'Happiness Index', vAxis: {
+									viewWindow: {
+										min: 0,
+										max: 1
+									},
+									ticks: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] // display labels every 25
+									}});
+			}				  
 		}
+
+		
     </script>
 </body>
 </html>
