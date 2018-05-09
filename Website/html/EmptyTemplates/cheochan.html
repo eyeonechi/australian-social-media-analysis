@@ -5,7 +5,7 @@
 	<title>Choropleth Tutorial - Leaflet</title>
 
 	<meta charset="utf-8" />
-	<script type ="text/javascript" src="/js/Couch.js"></script>
+	<script type ="text/javascript" src="../js/Couch.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	
@@ -34,7 +34,7 @@
 
 <div id='map'></div>
 
-<script type="text/javascript" src="../geojson/aus_lga2.js"></script>
+<script type="text/javascript" src="../geojson/aus_lga2_merge.js"></script>
 
 <script type="text/javascript">
 
@@ -178,8 +178,9 @@
 	for (var i = 0; i < statesData.features.length; i ++) {
 		polygons.push(statesData.features[i].geometry.coordinates[0][0]);
 	}
-	
+	/*
 	//////////////////////////////
+
 	var couch = new Couch();
 	//var db_names = ["prediction11885", "test002"];
 	var db_name = "homeless";
@@ -209,11 +210,10 @@
 				fillOpacity: 0.1,
 				radius: radius
 			}).addTo(mapLeaflet);
-			*/
+			
 		}
 		//mapLeaflet.addLayer(markers);
-	}
-
+	}*/
 </script>
 
 

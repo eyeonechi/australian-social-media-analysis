@@ -68,14 +68,13 @@ var grainIcon = L.icon({
 setTimeout(function(){
 //get data from server  
 	var couch = new Couch();
-	var db_names = ["prediction11885", "test002"];
-	//var db_name = "test002";
+	var db_names = ["prediction11885"];
 	var markers = new L.MarkerClusterGroup();
 	
 	for (var i = 0; i < db_names.length; i ++) {
 		foo(couch.query_all(db_names[i]), markers);
 	}
-},200);
+},400);
 
 function foo(result, markers) {
 	var color;

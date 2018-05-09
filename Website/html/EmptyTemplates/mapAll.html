@@ -78,15 +78,21 @@ setTimeout(function(){
 	} else {
 		for (var i = 0; i < result.data.length; i ++) {
 			var countHomeless = result.data[i].cnt2016;
+			var trend = result.data[i].cnt2016 - result.data[i].cnt2011;
 			var bbox = result.data[i].bbox;
 			var y = (bbox[0] + bbox[2]) / 2;
 			var x = (bbox[1] + bbox[3]) / 2;
 			var radius = countHomeless*100;
 			var data = [x, y];
+			var color;
+			if (trend>0) 
+				color='red';
+			else
+				color='green';
 			L.circle(data,{
-				color: 'red',
+				color: color,
 				opacity: 0.05,
-				fillColor: 'red',
+				fillColor: color,
 				fillOpacity: 0.1,
 				radius: radius
 			}).addTo(mapLeaflet);
