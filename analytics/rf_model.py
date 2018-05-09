@@ -36,9 +36,9 @@ from keywords import Keywords
 
 
 # set up spark environment
-os.environ['SPARK_HOME'] = "spark"
-sys.path.append("spark/python")
-sys.path.append("spark/python/lib")
+#os.environ['SPARK_HOME'] = "spark"
+#sys.path.append("spark/python")
+#sys.path.append("spark/python/lib")
 
 #COUCHDB_NAME = "cl_richard"
 COUCHDB_NAME = "classified1"
@@ -90,7 +90,10 @@ def trans(path):
         if dic['location']['coordinates'] is None:
             city = dic['location']['place_name']
             city = city.replace(" ","%20")
-            coor = cityPos(city)
+            try:
+                coor = cityPos(city)
+            except:
+                continue
             lng = coor['location']['lng']
             lat = coor['location']['lat']
         else:
