@@ -40,11 +40,10 @@ from keywords import Keywords
 #sys.path.append("spark/python")
 #sys.path.append("spark/python/lib")
 
-#COUCHDB_NAME = "cl_richard"
-COUCHDB_NAME = "classified1"
-#OUT_COUCHDB_NAME = "prediction11885"
-OUT_COUCHDB_NAME = "test001"
-REFORMED_FILE = "data/output0.csv"
+
+COUCHDB_NAME = ""
+OUT_COUCHDB_NAME = ""
+REFORMED_FILE = ""
 APP_NAME = "random forest model"
 SPARK_URL = "local[*]"
 RANDOM_SEED = 12345
@@ -86,58 +85,57 @@ def trans(path):
     
     i = 0
     for dic in jsonData:
-        # get coordinates
-        if dic['location']['coordinates'] is None:
-            city = dic['location']['place_name']
-            city = city.replace(" ","%20")
-            try:
+        try:
+            # get coordinates
+            if dic['location']['coordinates'] is None:
+                city = dic['location']['place_name']
+                city = city.replace(" ","%20")
                 coor = cityPos(city)
-            except:
-                continue
-            lng = coor['location']['lng']
-            lat = coor['location']['lat']
-        else:
-            lng = dic['location']['coordinates'][0]
-            lat = dic['location']['coordinates'][1]
+                lng = coor['location']['lng']
+                lat = coor['location']['lat']
+            else:
+                lng = dic['location']['coordinates'][0]
+                lat = dic['location']['coordinates'][1]
             
-        # get time amd timesptamp
-        time = dic['created_at']['day']+ '-' + \
+            # get time amd timesptamp
+            time = dic['created_at']['day']+ '-' + \
                     trans_month(dic['created_at']['month'])+ '-' + \
                     dic['created_at']['year']+ ' ' +dic['created_at']['time']
-        timeArray = t.strptime(time, "%d-%m-%Y %H:%M:%S")
-        timestamp = t.mktime(timeArray)
+            timeArray = t.strptime(time, "%d-%m-%Y %H:%M:%S")
+            timestamp = t.mktime(timeArray)
         
-        # to ensure at least one of homeless info and food info appears
-        home = dic['homeless']
-        foods = dic['food_list']
-        if (home is None) and (foods is None or len(foods) == 0):
-            continue
+            # to ensure at least one of homeless info and food info appears
+            home = dic['homeless']
+            foods = dic['food_list']
+            if (home is None) and (foods is None or len(foods) == 0):
+                continue
         
-        # get homeless information
-        if home is None:
-            homeless = -1
-            homeless_trend = 0
-        else:
-            try:
+            # get homeless information
+            if home is None:
+                homeless = -1
+                homeless_trend = 0
+            else:
                 homeless = dic['homeless']['cnt16']
                 homeless_trend = dic['homeless']['incre/decre']
-            except:
-                continue
-        # get food
-        if foods is None or len(foods) == 0:
-            writer.writerow([i, time, timestamp, lat, lng, dic['polarity'], \
+        
+            # get food
+            if foods is None or len(foods) == 0:
+                writer.writerow([i, time, timestamp, lat, lng, dic['polarity'], \
                              dic['user']['followers'], \
                              dic['user']['following'], homeless, \
                              homeless_trend, "-1"])
-            i += 1
-        else:
-            for food in foods:
-                food_class = get_food_class(food)
-                writer.writerow([i, time, timestamp, lat, lng, \
+                i += 1
+            else:
+                for food in foods:
+                    food_class = get_food_class(food)
+                    writer.writerow([i, time, timestamp, lat, lng, \
                                  dic['polarity'], dic['user']['followers'], \
                                  dic['user']['following'], homeless, \
                                  homeless_trend, food_class])
-                i += 1
+                    i += 1
+        except:
+            continue
+            
     csvfile.close()
     
 def trans_month(month):
@@ -187,6 +185,10 @@ def get_food_group(food):
 """
 
 if __name__ == "__main__":
+
+    COUCHDB_NAME = sys.argv[1]
+    OUT_COUCHDB_NAME = sys.argv[2]
+    REFORMED_FILE = sys.argv[3]
     
     # create spark session
     spark = SparkSession.builder.appName(APP_NAME) \
@@ -365,6 +367,8 @@ if __name__ == "__main__":
     """
     json_data = union_df.toJSON()
     
+    print("\nStart inserting data back to database...")
+    
     # insert data into couchdb
     my_db = Couch(OUT_COUCHDB_NAME)
 
@@ -399,17 +403,6 @@ if __name__ == "__main__":
     print('\n')
     my_db.insert(final_json)
     print("\nTotal number of rows inserted: %d" % (j))
-            
+
     spark.stop()
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+          
