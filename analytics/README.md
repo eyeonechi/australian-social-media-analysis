@@ -9,4 +9,4 @@ Dependencies:
 
 To invoke the analyser:
 
-analyser.sh [input_couchdb_name] [output_couchdb_name] [reformed_csv_file_name]
+sh analyser.sh [input_couchdb_name] [output_couchdb_name] [reformed_csv_file_name]
