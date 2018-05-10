@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
+
 	<title>Homeless Map by States in Australia</title>
 
 	<meta charset="utf-8" />
 	<script type ="text/javascript" src="../js/Couch.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"/>
@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
 	<link rel="stylesheet" href="https://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
 	<script src="https://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-	
+
 	<style>
 		body {
 		  margin: 0;
@@ -32,15 +32,15 @@
 		}
 		#map { width: 1500px; height: 900px; }
 		.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
-		.legend { text-align: left; line-height: 30px; width: 108px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }	
-		
+		.legend { text-align: left; line-height: 30px; width: 108px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+
 	</style>
 </head>
 <body>
 
 <div id='map'></div>
 
-<script type="text/javascript" src="../geojson/aus_lga2_merge.js"></script>
+<script type="text/javascript" src="../geojson/aus_lga2_merge.json"></script>
 
 <script type="text/javascript">
 
@@ -50,7 +50,7 @@
 		maxZoom: 18,
 		id: 'mapbox.light'
 	})/*.addTo(map)*/;
-	
+
 	var map = L.map('map', {center: [-30.69748, 133.88362], zoom: 5, layers: [homelessMap]});
 
 	// control that shows state info on hover
@@ -159,14 +159,14 @@
 	};
 
 	legend.addTo(map);
-	
+
 	var polygons = [];
 	for (var i = 0; i < statesData.features.length; i ++) {
 		polygons.push(statesData.features[i].geometry.coordinates[0][0]);
 	}
 
 	// food
-	
+
 	//image markers
 var meatIcon = L.icon({
     iconUrl: '/images/googleIcons/ms_steak.png',
@@ -192,14 +192,18 @@ var grainIcon = L.icon({
     iconUrl: '/images/googleIcons/corn.png',
     iconSize:     [30, 30], // size of the icon
 });
+var redIcon = L.icon({
+    iconUrl: '/images/redDot.png',
+    iconSize:     [12, 12], // size of the icon
+});
 //end image
 
 setTimeout(function(){
-//get data from server  
+//get data from server
 	var couch = new Couch();
-	var db_names = ["prediction11885"];
+	var db_names = ["test000", "prediction11885", "prediction27201"];
 	var markers = new L.MarkerClusterGroup();
-	
+
 	for (var i = 0; i < db_names.length; i ++) {
 		foo(couch.query_all(db_names[i]), markers);
 	}
@@ -229,10 +233,9 @@ function foo(result, markers) {
 					break;
 				case 'vegetables':
 					color = vegIcon;
-					break;	
+					break;
 				default:
 					color = redIcon;
-					console.log("Invalid food group");
 					break;
 			}
 			markers.addLayer(L.marker(point.geometry.coordinates,{

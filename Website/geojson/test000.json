@@ -1,0 +1,844 @@
+{
+  "data": [
+    {
+      "_id": "fc34595a0dae9ff3b7893c66834e690a",
+      "_rev": "1-aeab7854434005bb1a4786aba4c872d2",
+      "features": [
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 3965,
+            "following": 4321,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "29-04-2018 03:01:56"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 849,
+            "following": 3987,
+            "food": "pizza",
+            "polarity": 0.658,
+            "time": "29-04-2018 03:04:03"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1444,
+            "following": 664,
+            "food": "pizza",
+            "polarity": 0.9366,
+            "time": "29-04-2018 01:16:16"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.7760072,
+              144.9708071
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 380,
+            "following": 564,
+            "food": "pizza",
+            "polarity": 0.8883,
+            "time": "26-04-2018 02:19:47"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 766,
+            "following": 552,
+            "food": "pizza",
+            "polarity": 0.4019,
+            "time": "26-04-2018 12:44:13"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 853,
+            "following": 558,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "26-04-2018 13:15:36"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.86642251,
+              151.2012542
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 37,
+            "following": 169,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "26-04-2018 13:23:29"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -28.0183,
+              153.3921
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 84,
+            "following": 143,
+            "food": "pizza",
+            "polarity": 0.926,
+            "time": "26-04-2018 09:45:28"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 154,
+            "following": 219,
+            "food": "pizza",
+            "polarity": -0.2484,
+            "time": "26-04-2018 11:10:58"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 154,
+            "following": 219,
+            "food": "jackfruit",
+            "polarity": -0.2484,
+            "time": "26-04-2018 11:10:58"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.88888,
+              151.27759
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 4111,
+            "following": 4550,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "26-04-2018 02:58:37"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 93,
+            "following": 477,
+            "food": "pizza",
+            "polarity": -0.3078,
+            "time": "28-04-2018 14:45:30"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 168,
+            "following": 206,
+            "food": "pizza",
+            "polarity": 0.7543,
+            "time": "29-04-2018 04:50:28"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8823,
+              144.7
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 363,
+            "following": 472,
+            "food": "pizza",
+            "polarity": 0.296,
+            "time": "29-04-2018 05:15:22"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8823,
+              144.7
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 363,
+            "following": 472,
+            "food": "chicken",
+            "polarity": 0.296,
+            "time": "29-04-2018 05:15:22"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.4713077,
+              144.7851531
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 805,
+            "following": 608,
+            "food": "pizza",
+            "polarity": 0.8674,
+            "time": "28-04-2018 22:53:59"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -28.016667,
+              153.4
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1831,
+            "following": 2342,
+            "food": "pizza",
+            "polarity": 0.1999,
+            "time": "28-04-2018 22:57:28"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -27.999481,
+              153.42798
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 2617,
+            "following": 1081,
+            "food": "pizza",
+            "polarity": 0.6369,
+            "time": "29-04-2018 07:49:26"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 804,
+            "following": 805,
+            "food": "pizza",
+            "polarity": 0.8807,
+            "time": "29-04-2018 03:17:22"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 154,
+            "following": 384,
+            "food": "pizza",
+            "polarity": 0.4005,
+            "time": "28-04-2018 10:31:07"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -38.1353835,
+              145.8487441
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 105,
+            "following": 326,
+            "food": "pizza",
+            "polarity": 0.3169,
+            "time": "28-04-2018 10:34:33"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -36.8875485,
+              149.9058748
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 110,
+            "following": 142,
+            "food": "pizza",
+            "polarity": 0.7845,
+            "time": "28-04-2018 10:58:05"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -31.9505269,
+              115.8604572
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1919,
+            "following": 288,
+            "food": "pizza",
+            "polarity": 0.4215,
+            "time": "28-04-2018 11:04:38"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -31.9505269,
+              115.8604572
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1919,
+            "following": 288,
+            "food": "pineapple",
+            "polarity": 0.4215,
+            "time": "28-04-2018 11:04:38"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.23436,
+              151.5560099
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 155,
+            "following": 1010,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "28-04-2018 12:01:27"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8688197,
+              151.2092955
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 991,
+            "following": 1525,
+            "food": "pizza",
+            "polarity": 0.7263,
+            "time": "28-04-2018 12:37:23"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.3208415,
+              151.2335592
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 365,
+            "following": 51,
+            "food": "pizza",
+            "polarity": -0.0258,
+            "time": "28-04-2018 12:39:41"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.881437,
+              151.171106
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 241,
+            "following": 1003,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "28-04-2018 08:06:02"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -38.14565147,
+              145.25486876
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 457,
+            "following": 1076,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "28-04-2018 08:46:31"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -38.3686779,
+              142.4982086
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 775,
+            "following": 745,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "29-04-2018 06:25:24"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 331,
+            "following": 566,
+            "food": "pineapple",
+            "polarity": -0.4466,
+            "time": "29-04-2018 06:35:37"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -36.75,
+              146.317
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1103,
+            "following": 1633,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "29-04-2018 06:51:22"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.89607,
+              150.91241
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 396,
+            "following": 1082,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "29-04-2018 07:00:00"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -28.0183,
+              153.3921
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 672,
+            "following": 1477,
+            "food": "pizza",
+            "polarity": 0.6369,
+            "time": "29-04-2018 07:15:59"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -28.0183,
+              153.3921
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 672,
+            "following": 1477,
+            "food": "chicken",
+            "polarity": 0.6369,
+            "time": "29-04-2018 07:15:59"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.816127,
+              145.1942314
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 782,
+            "following": 577,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "28-04-2018 06:22:55"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -27.67859,
+              153.02245
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 179,
+            "following": 349,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "28-04-2018 06:39:08"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.88720186,
+              151.17431956
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 84,
+            "following": 618,
+            "food": "pizza",
+            "polarity": -0.6688,
+            "time": "28-04-2018 07:00:24"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.77347581,
+              150.97147078
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 174,
+            "following": 299,
+            "food": "pizza",
+            "polarity": -0.34,
+            "time": "28-04-2018 07:34:31"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -41.4545196,
+              145.9706647
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 8,
+            "following": 18,
+            "food": "pizza",
+            "polarity": 0.4939,
+            "time": "28-04-2018 13:44:36"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -31.0604769,
+              152.8481977
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 585,
+            "following": 433,
+            "food": "pizza",
+            "polarity": -0.4898,
+            "time": "28-04-2018 14:08:11"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -41.4545196,
+              145.9706647
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 268,
+            "following": 165,
+            "food": "pizza",
+            "polarity": 0.4019,
+            "time": "26-04-2018 06:27:54"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -27.4697707,
+              153.0251235
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 716,
+            "following": 625,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "26-04-2018 07:32:15"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.81191,
+              144.97188
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 302,
+            "following": 479,
+            "food": "pizza",
+            "polarity": 0.3612,
+            "time": "26-04-2018 07:32:35"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.81191,
+              144.97188
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 302,
+            "following": 479,
+            "food": "potato",
+            "polarity": 0.3612,
+            "time": "26-04-2018 07:32:35"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 2797,
+            "following": 2896,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "29-04-2018 00:27:53"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -37.8136276,
+              144.9630576
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 142,
+            "following": 68,
+            "food": "pizza",
+            "polarity": 0.0,
+            "time": "26-04-2018 04:24:41"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -34.9284989,
+              138.6007456
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 903,
+            "following": 374,
+            "food": "pizza",
+            "polarity": 0.6486,
+            "time": "26-04-2018 04:25:24"
+          },
+          "type": "Feature"
+        },
+        {
+          "geometry": {
+            "coordinates": [
+              -33.8583283,
+              151.20948426
+            ],
+            "type": "Point"
+          },
+          "properties": {
+            "followers": 1650,
+            "following": 920,
+            "food": "pizza",
+            "polarity": 0.6369,
+            "time": "26-04-2018 05:12:19"
+          },
+          "type": "Feature"
+        }
+      ],
+      "type": "FeatureCollection"
+    }
+  ]
+}

@@ -38,61 +38,178 @@
 	</style>
 </head>
 <body>
-	
+
 	<!-- Menu bar division -->
 	<div class="topnav">
 	  <a class="active" href="../index.html">Home</a>
 	  <a href="graphSentiment.html">Sentiments</a>
 	  <a href="graphHomeless.html">Homeless Trend</a>
 	</div>
-	
+
 	<!-- Chart and Graph division: https://developers.google.com/chart/interactive/docs/gallery-->
 	<div style="padding-left:16px">
 	  <h2>Sentiment Analysis for Australian Cities</h2>
 	</div>
 	  <div id="chart_div"></div>
+    <div id="chart_div2"></div>
+    <div id="chart_div3"></div>
 	<!-- Chart and Graph division -->
-	
+
 	<!-- Load data -->
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart']});
-			google.charts.setOnLoadCallback(drawChart);
-				
-		function drawChart() {
+		google.charts.setOnLoadCallback(drawChartPeriod);
+    google.charts.setOnLoadCallback(drawChartDay);
+    google.charts.setOnLoadCallback(drawChartDate);
+
+		function drawChartPeriod() {
 			var couch = new Couch();
-
-			var db_name = "classified1";
-
-			var result = couch.query_stat(db_name);
-				
-			if (result === undefined) {
+			var db_names = ["cl_richard", "cl_australia"];
+      var result = {"data": {"Afternoon": {}, "Evening": {}, "Midnight": {}, "Morning": {}}};
+      var avgs = {"Afternoon": [], "Evening": [], "Midnight": [], "Morning": []};
+      var rkeys = Object.keys(result.data);
+      for (var i = 0; i < db_names.length; i ++) {
+        var res = couch.period_stat(db_names[i]);
+        for (var j = 0; j < rkeys.length; j ++) {
+          avgs[rkeys[j]].push(res.data[rkeys[j]].avg);
+        }
+      }
+      for (var i = 0; i < rkeys.length; i ++) {
+        var avg = 0;
+        for (var j = 0; j < avgs[rkeys[i]].length; j ++) {
+          avg += avgs[rkeys[i]][j];
+        }
+        avg /= avgs[rkeys[i]].length;
+        result.data[rkeys[i]].avg = avg;
+      }
+			if (result === {}) {
 				console.log("Cannot GET data from: " + db_name);
 			}else {
-				var keys = Object.keys(result.data);
+        var sorted = result.data = Object.assign(...['Morning', 'Afternoon', 'Evening', 'Midnight'].map(k => ({ [k]: result.data[k] })));
+				var keys = Object.keys(sorted);
 				var table = new google.visualization.DataTable();
-		
 				table.addColumn('string', 'Time');
 				table.addColumn('number', 'Happiness Index');
 				for (var i = 0; i < keys.length; i ++) {
 					table.addRow([keys[i], result.data[keys[i]].avg]);
 				}
-				
-				console.log(table);
 				var container = document.getElementById('chart_div');
 				container.innerHTML = "";
-				var chart = new google.visualization.LineChart(container); 
-				chart.draw(table, {width: 800, height: 300, is3D: true, title: 'Sentiment Analysis',
-								  legend:'none', titleX:'Time of the Day', titleY:'Happiness Index', vAxis: {
-									viewWindow: {
-										min: 0,
-										max: 1
-									},
-									ticks: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] // display labels every 25
-									}});
-			}				  
+				var chart = new google.visualization.LineChart(container);
+				chart.draw(table, {width: 800, height: 300, is3D: true, title: 'Happiness Index vs. Time of Day',
+				  legend:'none', titleX:'Time of Day', titleY:'Happiness Index', vAxis: {
+					viewWindow: {
+						min: 0,
+						max: 0.3
+					},
+					ticks: [0.1, 0.15, 0.2, 0.25, 0.3] // display labels every 25
+					}});
+			}
 		}
+    function drawChartDay() {
+			var couch = new Couch();
+      var db_names = ["cl_richard", "cl_australia"];
+      var result = {"data": {"Sun": {}, "Mon": {}, "Tue": {}, "Wed": {}, "Thu": {}, "Fri": {}, "Sat": {}}};
+      var avgs = {"Sun": [], "Mon": [], "Tue": [], "Wed": [], "Thu": [], "Fri": [], "Sat": []};
+      var rkeys = Object.keys(result.data);
+      for (var i = 0; i < db_names.length; i ++) {
+        var res = couch.day_stat(db_names[i]);
+        for (var j = 0; j < rkeys.length; j ++) {
+          avgs[rkeys[j]].push(res.data[rkeys[j]].avg);
+        }
+      }
+      for (var i = 0; i < rkeys.length; i ++) {
+        var avg = 0;
+        for (var j = 0; j < avgs[rkeys[i]].length; j ++) {
+          avg += avgs[rkeys[i]][j];
+        }
+        avg /= avgs[rkeys[i]].length;
+        result.data[rkeys[i]].avg = avg;
+      }
+			if (result === {}) {
+				console.log("Cannot GET data from: " + db_name);
+			}else {
+        var sorted = result.data = Object.assign(...['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(k => ({ [k]: result.data[k] })));
+				var keys = Object.keys(sorted);
+				var table = new google.visualization.DataTable();
+				table.addColumn('string', 'Time');
+				table.addColumn('number', 'Happiness Index');
+				for (var i = 0; i < keys.length; i ++) {
+					table.addRow([keys[i], result.data[keys[i]].avg]);
+				}
+				var container = document.getElementById('chart_div2');
+				container.innerHTML = "";
+				var chart = new google.visualization.LineChart(container);
+				chart.draw(table, {width: 800, height: 300, is3D: true, title: 'Happiness Index vs. Day',
+				  legend:'none', titleX:'Day', titleY:'Happiness Index', vAxis: {
+					viewWindow: {
+						min: 0,
+						max: 0.3
+					},
+					ticks: [0.1, 0.15, 0.2, 0.25, 0.3] // display labels every 25
+					}});
+			}
+		}
+    function drawChartDate() {
+			var couch = new Couch();
+      var db_names = ["cl_richard", "cl_australia"];
+      var result = {"data": {}};
+      var avgs = {};
 
-		
+      for (var i = 0; i < db_names.length; i ++) {
+        var res = couch.date_stat(db_names[i]);
+        console.log(res);
+        var reskeys = Object.keys(res.data);
+        for (var j = 0; j < reskeys.length; j ++) {
+          if (!avgs[reskeys[j]]) {
+            // Key does not exist
+            avgs[reskeys[j]] = []
+          }
+          avgs[reskeys[j]].push(res.data[reskeys[j]].avg);
+        }
+      }
+      console.log(avgs);
+      var rkeys = Object.keys(avgs);
+      for (var i = 0; i < rkeys.length; i ++) {
+        var avg = 0;
+        for (var j = 0; j < avgs[rkeys[i]].length; j ++) {
+          avg += avgs[rkeys[i]][j];
+        }
+        avg /= avgs[rkeys[i]].length;
+        result.data[rkeys[i]] = {};
+        result.data[rkeys[i]].avg = avg;
+      }
+      console.log(result.data);
+			if (result === {}) {
+				console.log("Cannot GET data from: " + db_name);
+			}else {
+        var keys = Object.keys(result.data);
+        var sorted_keys = keys.sort(comp);
+        var sorted = result.data = Object.assign(...sorted_keys.map(k => ({ [k]: result.data[k] })));
+				var keys = Object.keys(sorted);
+				var table = new google.visualization.DataTable();
+				table.addColumn('string', 'Time');
+				table.addColumn('number', 'Happiness Index');
+				for (var i = 0; i < keys.length; i ++) {
+					table.addRow([keys[i], result.data[keys[i]].avg]);
+				}
+				var container = document.getElementById('chart_div3');
+				container.innerHTML = "";
+				var chart = new google.visualization.LineChart(container);
+				chart.draw(table, {width: 800, height: 300, is3D: true, title: 'Happiness Index vs. Year',
+  			  legend:'none', titleX:'Year', titleY:'Happiness Index', vAxis: {
+  				viewWindow: {
+  					min: 0,
+  					max: 0.5
+  				},
+  				ticks: [0.1, 0.2, 0.3, 0.4, 0.5] // display labels every 25
+  				}});
+			}
+		}
+    function comp(a, b) {
+        return new Date(a).getTime() - new Date(b).getTime();
+    }
+
     </script>
 </body>
 </html>
