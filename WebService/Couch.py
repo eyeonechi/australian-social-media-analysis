@@ -116,11 +116,11 @@ class Couch:
     # get aggregated data using map&reduce to get average sentiment score of different time periods
     # the view has been already created on the couchDB server.
     def get_aggr_view(self, view_name):
-        dd = self.db.get_design_document("_design001")
+        dd = self.db.get_design_document("_design" + view_name)
         view = dd.get_view(view_name)
         if view is None:
             self.set_aggr_view(view_name)
-            dd = self.db.get_design_document("_design001")
+            dd = self.db.get_design_document("_design" + view_name)
             view = dd.get_view(view_name)
         return view.result[0][0]["value"]
 
@@ -175,7 +175,6 @@ class Couch:
                                 function (doc) {
                                 var t = doc.created_at.weekday;
                                 emit([t], doc.polarity);
-                                }
                                 }
                             """
             reduce_func = """
@@ -273,7 +272,7 @@ class Couch:
                             return false;
                             }
                         """
-        dd = DesignDocument(self.db, "_design001")
+        dd = DesignDocument(self.db, "_design" + view_name)
         dd.add_view(view_name, map_func, reduce_func)
         dd.save()
 
