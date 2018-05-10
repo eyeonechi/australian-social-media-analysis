@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type ="text/javascript" src="../js/Couch.js"></script>
+	<script src="../js/csv/jquery.csv.min.js"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<style>
+	body {
+	  margin: 0;
+	  font-family: Arial, Helvetica, sans-serif;
+	}
+
+	.topnav {
+	  overflow: hidden;
+	  background-color: #333;
+	}
+
+	.topnav a {
+	  float: left;
+	  color: #f2f2f2;
+	  text-align: center;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  font-size: 17px;
+	}
+
+	.topnav a:hover {
+	  background-color: #ddd;
+	  color: black;
+	}
+
+	.topnav a.active {
+	  background-color: #ffff00;
+	  color: black;
+	}
+	</style>
+</head>
+<body>
+	
+	<!-- Menu bar division -->
+	<div class="topnav">
+	  <a class="active" href="../index.html">Home</a>
+	  <a href="graphSentiment.html">Sentiments</a>
+	  <a href="graphHomeless.html">Homeless Trend</a>
+	</div>
+	
+	<!-- Chart and Graph division: https://developers.google.com/chart/interactive/docs/gallery-->
+	<div style="padding-left:16px">
+	  <h2>Sentiment Analysis for Australian Cities</h2>
+	</div>
+	<div style="padding-left:25px">
+	<br><br>
+	  <h3>------ Negative Sentiments -------</h3>
+
+		  <div id="chart_div1"></div>
+		  <div id="chart_div2"></div>
+		<!-- Chart and Graph division -->
+		
+		<!-- Load data -->
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['corechart']});
+				
+					
+			function drawChart1() {
+				   $.get("../geojson/output_negative1.csv", function(csvString) {
+					  // transform the CSV string into a 2-dimensional array
+					  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+					  // this new DataTable object holds all the data
+					  var data = new google.visualization.arrayToDataTable(arrayData);
+					  // CAPACITY - En-route ATFM delay - YY - CHART
+					  var crt_ertdlyYY = new google.visualization.ChartWrapper({
+						 chartType: 'ScatterChart',
+						 containerId: 'chart_div1',
+						 dataTable: data,
+						 options:{
+							width: 700, height: 500,
+							title: 'Homeless Trend',
+							titleTextStyle : {color: 'black', fontSize: 20},
+							hAxis: {title: 'Sentiment Score', minValue: -1.1, maxValue: -0.3, ticks: [-1.1, -1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3]},
+							vAxis: {title: 'Homeless Trend', minValue: -1500, maxValue: 3000, ticks: [-1500, -1000, -500, 0, 500, 1000, 1500, 2000, 2500, 3000]},
+							legend: 'none',
+							trendlines: { 0: {color: 'red'} }
+						 }
+					  });
+					  crt_ertdlyYY.draw();
+					});
+			}
+			function drawChart2() {
+				   $.get("../geojson/output_negative2.csv", function(csvString) {
+					  // transform the CSV string into a 2-dimensional array
+					  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+					  // this new DataTable object holds all the data
+					  var data = new google.visualization.arrayToDataTable(arrayData);
+					  // CAPACITY - En-route ATFM delay - YY - CHART
+					  var crt_ertdlyYY = new google.visualization.ChartWrapper({
+						 chartType: 'ScatterChart',
+						 containerId: 'chart_div2',
+						 dataTable: data,
+						 options:{
+							width: 700, height: 500,
+							title: 'Homeless',
+							titleTextStyle : {color: 'black', fontSize: 20},
+							hAxis: {title: 'Sentiment Score', minValue: -1.1, maxValue: -0.3, ticks: [-1.1, -1, -0.9, -0.8, -0.7, -0.6, -0.5, -0.4, -0.3]},
+							vAxis: {title: 'Homeless', minValue: -1500, maxValue: 6000, ticks: [-1500, -1000, -500, 0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000]},
+							legend: 'none',
+							trendlines: { 0: {color: 'red'} }
+						 }
+					  });
+					  crt_ertdlyYY.draw();
+					});
+			}
+
+			google.charts.setOnLoadCallback(drawChart1);
+			google.charts.setOnLoadCallback(drawChart2);
+		</script>
+	</div>
+	<div style="padding-left:25px">
+	<br><br>
+	  <h3>------ Positive Sentiments -------</h3>
+
+		  <div id="chart_div3"></div>
+		  <div id="chart_div4"></div>
+		<!-- Chart and Graph division -->
+		
+		<!-- Load data -->
+		<script type="text/javascript">
+			google.charts.load('current', {'packages':['corechart']});
+				
+					
+			function drawChart3() {
+				   $.get("../geojson/output_positive1.csv", function(csvString) {
+					  // transform the CSV string into a 2-dimensional array
+					  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+					  // this new DataTable object holds all the data
+					  var data = new google.visualization.arrayToDataTable(arrayData);
+					  // CAPACITY - En-route ATFM delay - YY - CHART
+					  var crt_ertdlyYY = new google.visualization.ChartWrapper({
+						 chartType: 'ScatterChart',
+						 containerId: 'chart_div3',
+						 dataTable: data,
+						 options:{
+							width: 700, height: 500,
+							title: 'Homeless Trend',
+							titleTextStyle : {color: 'black', fontSize: 20},
+							hAxis: {title: 'Sentiment Score', minValue: 0.4, maxValue: 1.1, ticks: [0.5, 0.6, 0.7, 0.8, 0.9, 1]},
+							vAxis: {title: 'Homeless Trend', minValue: -1500, maxValue: 3500, ticks: [-1500, -1000, -500, 0, 500, 1000, 1500, 2000, 2500, 3000, 3500]},
+							legend: 'none',
+							trendlines: { 0: {color: 'red'} }
+						 }
+					  });
+					  crt_ertdlyYY.draw();
+					});
+			}
+			function drawChart4() {
+				   $.get("../geojson/output_positive2.csv", function(csvString) {
+					  // transform the CSV string into a 2-dimensional array
+					  var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+					  // this new DataTable object holds all the data
+					  var data = new google.visualization.arrayToDataTable(arrayData);
+					  // CAPACITY - En-route ATFM delay - YY - CHART
+					  var crt_ertdlyYY = new google.visualization.ChartWrapper({
+						 chartType: 'ScatterChart',
+						 containerId: 'chart_div4',
+						 dataTable: data,
+						 options:{
+							width: 700, height: 500,
+							title: 'Homeless',
+							titleTextStyle : {color: 'black', fontSize: 20},
+							hAxis: {title: 'Sentiment Score', minValue: 0.4, maxValue: 1.1, ticks: [0.5, 0.6, 0.7, 0.8, 0.9, 1]},
+							vAxis: {title: 'Homeless', minValue: -1500, maxValue: 6000, ticks: [-1500, -1000, -500, 0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000]},
+							legend: 'none',
+							trendlines: { 0: {color: 'red'} }
+						 }
+					  });
+					  crt_ertdlyYY.draw();
+					});
+			}
+
+			google.charts.setOnLoadCallback(drawChart3);
+			google.charts.setOnLoadCallback(drawChart4);
+		</script>
+	</div>
+</body>
+</html>

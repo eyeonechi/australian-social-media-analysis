@@ -26,6 +26,20 @@
 	<!-- mapbox -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+	
+	<style>
+		.columnmap {
+		  float: left;
+		  width: 33.33%;
+		  padding: 5px;
+		}
+
+		.rowmap::after {
+		  content: "";
+		  clear: both;
+		  display: table;
+		}
+	</style>
 </head>
 <body>
 
@@ -108,7 +122,7 @@
           </div>
           <div class="media-body">
             <h2 class="media-heading">Data Sources</h2>
-            <h5><b>The data was collected from Twitter posts in Australia.</b></h5>
+            <h5><b>The data was collected from Twitter and AURIN in Australia.</b></h5>
           </div>
         </div>
       </div>
@@ -133,6 +147,8 @@
           </div>
           <div class="media-body">
             <h2 class="media-heading">Insight Graphs</h2>
+			<h5><b>- Sentiments</h5></b>
+			<h5><b>- Homeless Trend</h5></b>
           </div>
         </div>
       </div>
@@ -142,7 +158,7 @@
         <a href="/html/pieChart.html" class="btn btn-default smoothScroll">Pie Chart</a>
 		<a href="/html/barChart.html" class="btn btn-default smoothScroll">Bar Chart</a>
 		-->
-		<a href="/html/graph.html" class="btn btn-default smoothScroll">Graph</a>
+		<a href="/html/graphSentiment.html" class="btn btn-default smoothScroll">Graph</a>
       </div>
 
     </div>
@@ -157,17 +173,25 @@
 			<div class="col-md-offset-2 col-md-8 col-sm-12">
 				<div class="section-title">
 					<h6 class="wow fadeInUp" data-wow-delay="0.3s">View Insights on <strong>Map</strong></h6>
-					<br><br>
-					<b><a href="/html/mapFood.html" style="font-size: 25px; text-decoration: none">Food Consumption in Australia</a></b><br><br>
-					<b><a href="/html/mapHomelessBySuburb.html" style="font-size: 25px; text-decoration: none">Homeless in Australia by Suburbs</a></b><br><br>
-					<b><a href="/html/mapHomelessAndFoods.html" style="font-size: 25px; text-decoration: none">Homeless and Food Consumption in Australia</a></b><br><br>
 				</div>
+	
 					<!--
 					<div class="clearfix text-center col-md-12">
 						<div id='map'></div>
 					</div>
 					-->
 			</div>
+							<div class="rowmap">
+				  <div class="columnmap">
+					<a href="/html/mapFood.html"><figcaption align = "left"><b><h4>Food Consumption in Australia</h4></b></figcaption><img src="/images/mapFood.png" width="300" height="300"/></a>
+				  </div>
+				  <div class="columnmap">
+					<a href="/html/mapHomelessBySuburb.html"><figcaption align = "left"><b><h4>Homeless Statistics by Suburbs</h4></b></figcaption><img src="/images/mapHomeless.png" width="300" height="300"/></a>
+				  </div>
+				  <div class="columnmap">
+					<a href="/html/mapHomelessAndFoods.html"><figcaption align = "left"><b><h4>Homeless and Food Statistics</h4></b></figcaption><img src="/images/mapFoodnHomeless.png" width="300" height="300"/></a>
+				  </div>
+				</div>
 		</div>
 	</div>
 </section>
