@@ -101,7 +101,7 @@ def day_view(db_name):
 
 
 @app.route('/database/<string:db_name>/date', methods=["GET"])
-def day_view(db_name):
+def date_view(db_name):
     """
     get information of aggregated data of specific database.
     :param db_name: string; the name of target database
