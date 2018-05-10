@@ -115,60 +115,164 @@ class Couch:
 
     # get aggregated data using map&reduce to get average sentiment score of different time periods
     # the view has been already created on the couchDB server.
-    def get_aggr_view(self):
+    def get_aggr_view(self, view_name):
         dd = self.db.get_design_document("_design001")
-        view = dd.get_view("view1")
+        view = dd.get_view(view_name)
         if view is None:
-            self.set_aggr_view()
+            self.set_aggr_view(view_name)
             dd = self.db.get_design_document("_design001")
             view = dd.get_view("view1")
         return view.result[0][0]["value"]
 
     # set the view of analyzing sentiment score with time periods using built-in map&reduce function.
-    def set_aggr_view(self):
-        view_name = "view1"
-        map_func = """
-            function (doc) {
-            var t = doc.created_at.time.split(":");
-            if(parseInt(t) < 6 ) t = "Midnight";
-            else if(parseInt(t) < 12) t = "Morning";
-            else if(parseInt(t) < 18) t = "Afternoon";
-            else t = "Evening";
-            emit([t], doc.polarity);
-            }
-        """
-        reduce_func = """
-            function (keys, values, rereduce){
-            var key_set = ["Midnight", "Afternoon", "Morning", "Evening"]
-            var dict = {}
-            for(var i = 0; i < key_set.length; i++) {
-            dict[key_set[i]] = {"sum":0, "cnt":0, "avg":0};
-            }
-            if (rereduce) {
-            for(var j = 0; j < values.length; j++){
-            for(var i = 0; i < key_set.length; i++) {
-            dict[key_set[i]]["sum"] += values[j][key_set[i]]["sum"];
-            dict[key_set[i]]["cnt"] += values[j][key_set[i]]["cnt"];
-            }
-            }
-            for(var i = 0; i < key_set.length; i++)
-            dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
-            return dict;
-            }
-            else {
-            for(var i = 0; i < key_set.length; i++) {
-            for(var j = 0; j < values.length; j++){
-              if(key_set[i] == keys[j][0][0]){
-                dict[key_set[i]]["sum"] += values[j];
-                dict[key_set[i]]["cnt"] += 1;
+    def set_aggr_view(self, view_name):
+        if view_name == "view1":
+            map_func = """
+                function (doc) {
+                var t = doc.created_at.time.split(":");
+                if(parseInt(t) < 6 ) t = "Midnight";
+                else if(parseInt(t) < 12) t = "Morning";
+                else if(parseInt(t) < 18) t = "Afternoon";
+                else t = "Evening";
+                emit([t], doc.polarity);
+                }
+            """
+            reduce_func = """
+                function (keys, values, rereduce){
+                var key_set = ["Midnight", "Afternoon", "Morning", "Evening"]
+                var dict = {}
+                for(var i = 0; i < key_set.length; i++) {
+                dict[key_set[i]] = {"sum":0, "cnt":0, "avg":0};
+                }
+                if (rereduce) {
+                for(var j = 0; j < values.length; j++){
+                for(var i = 0; i < key_set.length; i++) {
+                dict[key_set[i]]["sum"] += values[j][key_set[i]]["sum"];
+                dict[key_set[i]]["cnt"] += values[j][key_set[i]]["cnt"];
+                }
+                }
+                for(var i = 0; i < key_set.length; i++)
                 dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
-              }
-            }
-            }
-            return dict;
-            }
-            }
-        """
+                return dict;
+                }
+                else {
+                for(var i = 0; i < key_set.length; i++) {
+                for(var j = 0; j < values.length; j++){
+                  if(key_set[i] == keys[j][0][0]){
+                    dict[key_set[i]]["sum"] += values[j];
+                    dict[key_set[i]]["cnt"] += 1;
+                    dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
+                  }
+                }
+                }
+                return dict;
+                }
+                }
+            """
+
+        elif view_name == "view2":
+            map_func = """
+                                function (doc) {
+                                var t = doc.created_at.weekday;
+                                emit([t], doc.polarity);
+                                }
+                                }
+                            """
+            reduce_func = """
+                                function (keys, values, rereduce){
+                                var key_set = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+                                var dict = {}
+                                for(var i = 0; i < key_set.length; i++) {
+                                dict[key_set[i]] = {"sum":0, "cnt":0, "avg":0};
+                                }
+                                if (rereduce) {
+                                for(var j = 0; j < values.length; j++){
+                                for(var i = 0; i < key_set.length; i++) {
+                                dict[key_set[i]]["sum"] += values[j][key_set[i]]["sum"];
+                                dict[key_set[i]]["cnt"] += values[j][key_set[i]]["cnt"];
+                                }
+                                }
+                                for(var i = 0; i < key_set.length; i++)
+                                dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
+                                return dict;
+                                }
+                                else {
+                                for(var i = 0; i < key_set.length; i++) {
+                                for(var j = 0; j < values.length; j++){
+                                if(key_set[i] == keys[j][0][0]){
+                                dict[key_set[i]]["sum"] += values[j];
+                                dict[key_set[i]]["cnt"] += 1;
+                                dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
+                                }
+                                }
+                                }
+                                return dict;
+                                }
+                                }
+                            """
+        else:
+            map_func = """
+                            function (doc) {
+                            var t = doc.created_at.month + "-" + doc.created_at.day;
+                            emit([t], doc.polarity);
+                            }
+                            """
+            reduce_func = """
+                            function (keys, values, rereduce){
+                            var key_set = []
+                            var dict = {}
+                            for(var i = 0; i < key_set.length; i++) {
+                            dict[key_set[i]] = {"sum":0, "cnt":0, "avg":0};
+                            }
+                            if (rereduce) {
+                            for(var i = 0; i < values.length; i++){
+                            for(prop in values[i]){
+                            if(!exists(prop, key_set)) key_set.push(prop);
+                            }
+                            }
+                            for(var i = 0; i < key_set.length; i++){
+                            dict[key_set[i]] = {};
+                            dict[key_set[i]]["sum"] = 0;
+                            dict[key_set[i]]["cnt"] = 0;
+                            for(var j = 0; j < values.length; j++) {
+                            if(key_set[i] in values[j]){
+                            dict[key_set[i]]["sum"] += values[j][key_set[i]]["sum"];
+                            dict[key_set[i]]["cnt"] += values[j][key_set[i]]["cnt"];
+                            }
+                            }
+                            }
+                            for(var i = 0; i < key_set.length; i++)
+                            if(key_set[i] in dict) dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
+                            return dict;
+                            }
+                            else {
+                            for(var i = 0; i < keys.length; i++){
+                            var k = keys[i][0][0];
+                            if(!exists(k, key_set)) key_set.push(k);
+                            }
+                            for(var i = 0; i < key_set.length; i++) {
+                            dict[key_set[i]] = {};
+                            dict[key_set[i]]["sum"] = 0;
+                            dict[key_set[i]]["cnt"] = 0;
+                            for(var j = 0; j < values.length; j++){
+                            if(key_set[i] === keys[j][0][0]){
+                            dict[key_set[i]]["sum"] += values[j];
+                            dict[key_set[i]]["cnt"] += 1;
+                            dict[key_set[i]]["avg"] = (dict[key_set[i]]["sum"] / dict[key_set[i]]["cnt"]);
+                            }
+                            }
+                            }
+                            return dict;
+                            }
+                            }
+                            
+                            function exists(e, arr){
+                            for(var i = 0; i < arr.length; i++){
+                            if(arr[i] === e) return true;
+                            }
+                            return false;
+                            }
+                        """
         dd = DesignDocument(self.db, "_design001")
         dd.add_view(view_name, map_func, reduce_func)
         dd.save()

@@ -68,15 +68,47 @@ def query(db_name):
     return res
 
 
-@app.route('/databate/<string:db_name>/aggregation', methods=["GET"])
-def aggregate(db_name):
+@app.route('/database/<string:db_name>/period', methods=["GET"])
+def period_view(db_name):
     """
     get information of aggregated data of specific database.
     :param db_name: string; the name of target database
     :return: res: respond object including the query result.
     """
     db = Couch.Couch(db_name)
-    q_res = {"data": db.get_aggr_view()}
+    q_res = {"data": db.get_aggr_view("view1")}
+    res = flask.make_response(flask.jsonify(q_res))
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Access-Control-Allow-Methods'] = 'GET'
+    res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    return res
+
+
+@app.route('/database/<string:db_name>/day', methods=["GET"])
+def day_view(db_name):
+    """
+    get information of aggregated data of specific database.
+    :param db_name: string; the name of target database
+    :return: res: respond object including the query result.
+    """
+    db = Couch.Couch(db_name)
+    q_res = {"data": db.get_aggr_view("view2")}
+    res = flask.make_response(flask.jsonify(q_res))
+    res.headers['Access-Control-Allow-Origin'] = '*'
+    res.headers['Access-Control-Allow-Methods'] = 'GET'
+    res.headers['Access-Control-Allow-Headers'] = 'x-requested-with,content-type'
+    return res
+
+
+@app.route('/database/<string:db_name>/date', methods=["GET"])
+def day_view(db_name):
+    """
+    get information of aggregated data of specific database.
+    :param db_name: string; the name of target database
+    :return: res: respond object including the query result.
+    """
+    db = Couch.Couch(db_name)
+    q_res = {"data": db.get_aggr_view("view3")}
     res = flask.make_response(flask.jsonify(q_res))
     res.headers['Access-Control-Allow-Origin'] = '*'
     res.headers['Access-Control-Allow-Methods'] = 'GET'
