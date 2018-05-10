@@ -121,7 +121,7 @@ class Couch:
         if view is None:
             self.set_aggr_view(view_name)
             dd = self.db.get_design_document("_design001")
-            view = dd.get_view("view1")
+            view = dd.get_view(view_name)
         return view.result[0][0]["value"]
 
     # set the view of analyzing sentiment score with time periods using built-in map&reduce function.
