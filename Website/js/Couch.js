@@ -35,13 +35,47 @@ function Couch(){
         return result;
     };
 
-    /*Get data in custom aggregated map-reduced view*/
-    this.query_stat = function(db_name){
+    /*Get data in custom aggregated map-reduced view according to period.*/
+    this.period_stat = function(db_name){
         var result;
         $.ajax({
             type: "GET",
             async: false,
-            url: "http://115.146.85.206:5000/databate/" + db_name + "/aggregation",
+            url: "http://115.146.85.206:5000/database/" + db_name + "/period",
+            ContentType: "application/json",
+            data: {},
+            dataType: "json",
+            success: function(data) {
+                result = data;
+            }
+        });
+        return result;
+    };
+
+    /*Get data in custom aggregated map-reduced view according to days of a week.*/
+    this.day_stat = function(db_name){
+        var result;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "http://115.146.85.206:5000/database/" + db_name + "/day",
+            ContentType: "application/json",
+            data: {},
+            dataType: "json",
+            success: function(data) {
+                result = data;
+            }
+        });
+        return result;
+    };
+
+    /*Get data in custom aggregated map-reduced view according to dates of a year.*/
+    this.date_stat = function(db_name){
+        var result;
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "http://115.146.85.206:5000/database/" + db_name + "/date",
             ContentType: "application/json",
             data: {},
             dataType: "json",
