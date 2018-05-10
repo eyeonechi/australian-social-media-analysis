@@ -158,7 +158,6 @@
 
       for (var i = 0; i < db_names.length; i ++) {
         var res = couch.date_stat(db_names[i]);
-        console.log(res);
         var reskeys = Object.keys(res.data);
         for (var j = 0; j < reskeys.length; j ++) {
           if (!avgs[reskeys[j]]) {
@@ -168,7 +167,6 @@
           avgs[reskeys[j]].push(res.data[reskeys[j]].avg);
         }
       }
-      console.log(avgs);
       var rkeys = Object.keys(avgs);
       for (var i = 0; i < rkeys.length; i ++) {
         var avg = 0;
@@ -179,7 +177,6 @@
         result.data[rkeys[i]] = {};
         result.data[rkeys[i]].avg = avg;
       }
-      console.log(result.data);
 			if (result === {}) {
 				console.log("Cannot GET data from: " + db_name);
 			}else {

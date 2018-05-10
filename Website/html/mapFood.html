@@ -34,8 +34,8 @@
 <script>
 //map initiation
 	L.mapbox.accessToken = 'pk.eyJ1IjoiaGFubmFobmdvYyIsImEiOiJjamc3Z2ZldDUwMjc4Mndwam9wZWNqZG5rIn0.Qj8OvcCuEytwM9tAXakxpQ';
-	var mapLeaflet = L.mapbox.map('map-leaflet', 'mapbox.streets')
-	  .setView([-37.814, 144.96332], 5);
+	var map = L.mapbox.map('map-leaflet', 'mapbox.streets').setView([-37.814, 144.96332], 5);
+
 //end map initiation
 
 //image markers
@@ -63,14 +63,18 @@ var grainIcon = L.icon({
     iconUrl: '/images/googleIcons/corn.png',
     iconSize:     [30, 30], // size of the icon
 });
+var redIcon = L.icon({
+    iconUrl: '/images/redDot.png',
+    iconSize:     [12, 12], // size of the icon
+});
 //end image
 
 setTimeout(function(){
-//get data from server  
+//get data from server
 	var couch = new Couch();
-	var db_names = ["prediction11885"];
+	var db_names = ["prediction11885", "prediction27201"];
 	var markers = new L.MarkerClusterGroup();
-	
+
 	for (var i = 0; i < db_names.length; i ++) {
 		foo(couch.query_all(db_names[i]), markers);
 	}
@@ -78,10 +82,11 @@ setTimeout(function(){
 
 function foo(result, markers) {
 	var color;
-	if(result === undefined) {
-		console.log("Cannot GET data from: " +db_name);
+	console.log(result);
+	if(result === undefined || result.data === undefined) {
+		console.log("Cannot GET data from database");
 	} else {
-		result.data[0].features.forEach(function(point) {
+		result.data[1].features.forEach(function(point) {
 			switch(point.properties.food_group) {
 				case 'fastfood':
 					color = fastfoodIcon;
@@ -100,17 +105,16 @@ function foo(result, markers) {
 					break;
 				case 'vegetables':
 					color = vegIcon;
-					break;	
+					break;
 				default:
 					color = redIcon;
-					console.log("Invalid food group");
 					break;
 			}
 			markers.addLayer(L.marker(point.geometry.coordinates,{
 				icon: color
 			}).bindPopup("Food: "+JSON.stringify(point.properties.food)));
 		});
-		mapLeaflet.addLayer(markers);
+		map.addLayer(markers);
 	}
 }
 
