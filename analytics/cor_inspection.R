@@ -6,7 +6,7 @@
 # Ivan Chee - 736901
 # Duer Wang - 824325
 
-# R script that perform some basic correlation analysis
+# R script that performs some basic correlation analysis
 
 # read files
 data_pos = read.csv("Desktop/90024/data/output_positive.csv")

@@ -15,7 +15,6 @@ information.
 Using random forest classification model for predicting food.
 Using random forest regression model for predicting homeless and homeless trend.
 
-To invoke: python rf_model.py
 """
 
 import sys
