@@ -72,21 +72,22 @@ var redIcon = L.icon({
 setTimeout(function(){
 //get data from server
 	var couch = new Couch();
-	var db_names = ["prediction11885", "prediction27201"];
+	var db_names = ["test000", "prediction11885", "prediction27201"];
 	var markers = new L.MarkerClusterGroup();
 
 	for (var i = 0; i < db_names.length; i ++) {
-		foo(couch.query_all(db_names[i]), markers);
+		var result = couch.query_all(db_names[i]);
+		console.log(result);
+		foo(result, markers);
 	}
 },400);
 
 function foo(result, markers) {
 	var color;
-	console.log(result);
 	if(result === undefined || result.data === undefined) {
 		console.log("Cannot GET data from database");
 	} else {
-		result.data[1].features.forEach(function(point) {
+		result.data[result.data.length - 1].features.forEach(function(point) {
 			switch(point.properties.food_group) {
 				case 'fastfood':
 					color = fastfoodIcon;

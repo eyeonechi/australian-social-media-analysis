@@ -205,7 +205,9 @@ setTimeout(function(){
 	var markers = new L.MarkerClusterGroup();
 
 	for (var i = 0; i < db_names.length; i ++) {
-		foo(couch.query_all(db_names[i]), markers);
+		var result = couch.query_all(db_names[i]);
+		console.log(result);
+		foo(result, markers);
 	}
 },400);
 
@@ -214,7 +216,7 @@ function foo(result, markers) {
 	if(result === undefined) {
 		console.log("Cannot GET data from: " +db_name);
 	} else {
-		result.data[0].features.forEach(function(point) {
+		result.data[result.data.length - 1].features.forEach(function(point) {
 			switch(point.properties.food_group) {
 				case 'fastfood':
 					color = fastfoodIcon;
