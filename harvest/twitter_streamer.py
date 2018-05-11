@@ -2,8 +2,14 @@
 COMP90024 Cluster and Cloud Computing
 Semester 1 2018
 Assignment 2 - Australian Social Media Analysis
-Team 42
 twitter_streamer.py
+
+Team 42
+963370 Thuy Ngoc Ha
+824371 Lan Zhou
+950618 Zijian Wang
+736901 Ivan Chee
+824325 Duer Wang
 """
 
 import json
@@ -28,13 +34,13 @@ class TwitterStreamListener(StreamListener):
 
     def __init__(self, data_dir, query):
         query_fname = format_filename(query)
-        #self.conn = Couch(query)
+        self.conn = Couch(query)
         self.outfile = "%s/%s.json" % (data_dir, query_fname)
         self.userfile = "%s/%s_users.json" % (data_dir, query_fname)
 
     def on_data(self, data):
         json_data = json.loads(data)
-        #self.conn.insert(json_data)
+        self.conn.insert(json_data)
         mentions = []
         print(data)
 
