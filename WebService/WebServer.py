@@ -19,19 +19,44 @@ from flask import Flask, request
 import Couch
 import json
 import flask
+import os
 
 # start the web service.
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 
 @app.route('/')
+@app.route('/index')
 def index():
     """
     For test if the service works.
     :return: NoneType
     """
-    return "Hello, World!"
+    return flask.render_template('index.html', title='Home')
 
+@app.route('/graph')
+def graph():
+    return flask.render_template('graph.html', title='Graph')
+
+@app.route('/graphHomeless')
+def graphHomeless():
+    return flask.render_template('graphHomeless.html', title='Homeless Graph')
+
+@app.route('/graphSentiment')
+def graphSentiment():
+    return flask.render_template('graphSentiment.html', title='Sentiment Graph')
+
+@app.route('/mapFood')
+def mapFood():
+    return flask.render_template('mapFood.html', title='Food Map')
+
+@app.route('/mapHomelessAndFoods')
+def mapHomelessAndFoods():
+    return flask.render_template('mapHomelessAndFoods.html', title='Homeless and Foods Map')
+
+@app.route('/mapHomelessBySuburb')
+def mapHomelessBySuburb():
+    return flask.render_template('mapHomelessBySuburb.html', title='Homeless by Suburb Map')
 
 @app.route('/database/<string:db_name>', methods=["GET"])
 def query_all(db_name):
@@ -117,4 +142,4 @@ def date_view(db_name):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=os.environ.get('PORT', 5000), debug=False)

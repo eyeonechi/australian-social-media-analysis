@@ -12,20 +12,42 @@
 	<meta name="description" content="">
 
 	<!-- stylesheets css -->
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/animate.min.css">
+	<link rel="stylesheet" href="static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="static/css/animate.min.css">
 
-  	<link rel="stylesheet" href="css/et-line-font.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
+  	<link rel="stylesheet" href="static/css/et-line-font.css">
+	<link rel="stylesheet" href="static/css/font-awesome.min.css">
 
-  	<link rel="stylesheet" href="css/vegas.min.css">
-	<link rel="stylesheet" href="css/style.css">
+  	<link rel="stylesheet" href="static/css/vegas.min.css">
+	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Rajdhani:400,500,700' rel='stylesheet' type='text/css'>
 	
 	<!-- mapbox -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+		
+		<!-- javscript js -->
+		<script src="static/js/jquery.js"></script>
+		<script src="static/js/bootstrap.min.js"></script>
+
+		<script src="static/js/vegas.min.js"></script>
+		<script src="static/js/custom.js"></script>
+
+		<script src="static/js/wow.min.js"></script>
+		<script src="static/js/smoothscroll.js"></script>
+
+		<!--
+		<script>
+			mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFobmdvYyIsImEiOiJjamc3Z2ZldDUwMjc4Mndwam9wZWNqZG5rIn0.Qj8OvcCuEytwM9tAXakxpQ';
+			var map = new mapboxgl.Map({
+				container: 'map', // container id
+				style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
+				center: [133.775136, -28.274398], // starting position [lng, lat]
+				zoom: 2 // starting zoom
+			});
+		</script>
+		-->
 	
 	<style>
 		.columnmap {
@@ -87,7 +109,7 @@
 		<div class="row">
 
       <div class="col-md-6 col-sm-12">
-        <img src="images/aboutpage.png" class="img-responsive wow fadeInUp" alt="About">
+        <img src="static/images/aboutpage.png" class="img-responsive wow fadeInUp" alt="About">
       </div>
 
 			<div class="col-md-6 col-sm-12">
@@ -158,7 +180,7 @@
         <a href="/html/pieChart.html" class="btn btn-default smoothScroll">Pie Chart</a>
 		<a href="/html/barChart.html" class="btn btn-default smoothScroll">Bar Chart</a>
 		-->
-		<a href="/html/graphSentiment.html" class="btn btn-default smoothScroll">Graph</a>
+		<a href="graphSentiment" class="btn btn-default smoothScroll">Graph</a>
       </div>
 
     </div>
@@ -183,13 +205,13 @@
 			</div>
 							<div class="rowmap">
 				  <div class="columnmap">
-					<a href="/html/mapFood.html"><figcaption align = "left"><b><h4>Food Consumption in Australia</h4></b></figcaption><img src="/images/mapFood.png" width="300" height="300"/></a>
+					<a href="mapFood"><figcaption align = "left"><b><h4>Food Consumption in Australia</h4></b></figcaption><img src="static/images/mapFood.png" width="300" height="300"/></a>
 				  </div>
 				  <div class="columnmap">
-					<a href="/html/mapHomelessBySuburb.html"><figcaption align = "left"><b><h4>Homeless Statistics by Suburbs</h4></b></figcaption><img src="/images/mapHomeless.png" width="300" height="300"/></a>
+					<a href="mapHomelessBySuburb"><figcaption align = "left"><b><h4>Homeless Statistics by Suburbs</h4></b></figcaption><img src="static/images/mapHomeless.png" width="300" height="300"/></a>
 				  </div>
 				  <div class="columnmap">
-					<a href="/html/mapHomelessAndFoods.html"><figcaption align = "left"><b><h4>Homeless and Food Statistics</h4></b></figcaption><img src="/images/mapFoodnHomeless.png" width="300" height="300"/></a>
+					<a href="mapHomelessAndFoods"><figcaption align = "left"><b><h4>Homeless and Food Statistics</h4></b></figcaption><img src="static/images/mapFoodnHomeless.png" width="300" height="300"/></a>
 				  </div>
 				</div>
 		</div>
@@ -199,25 +221,5 @@
 <!-- Back top -->
 <a href="#back-top" class="go-top"><i class="fa fa-angle-up"></i></a>
 
-<!-- javscript js -->
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-<script src="js/vegas.min.js"></script>
-
-<script src="js/wow.min.js"></script>
-<script src="js/smoothscroll.js"></script>
-<script src="js/custom.js"></script>
-<!--
-<script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoiaGFubmFobmdvYyIsImEiOiJjamc3Z2ZldDUwMjc4Mndwam9wZWNqZG5rIn0.Qj8OvcCuEytwM9tAXakxpQ';
-	var map = new mapboxgl.Map({
-		container: 'map', // container id
-		style: 'mapbox://styles/mapbox/streets-v9', // stylesheet location
-		center: [133.775136, -28.274398], // starting position [lng, lat]
-		zoom: 2 // starting zoom
-	});
-</script>
--->
 </body>
 </html>

@@ -2,7 +2,7 @@
  /* jQuery Pre loader
   -----------------------------------------------*/
 $(window).load(function(){
-    $('.preloader').fadeOut(1000); // set duration in brackets    
+    $('.preloader').fadeOut(1000); // set duration in brackets
 });
 
 
@@ -11,13 +11,14 @@ $(document).ready(function() {
   /* Home Slideshow Vegas
   -----------------------------------------------*/
   $(function() {
-    $('body').vegas({
+    $('body').vegas('overlay', {
         slides: [
-            { src: 'images/slide-1.jpg' },
-            { src: 'images/slide-2.jpg' }
+            { src: 'static/images/slide-1.jpg' },
+            { src: 'static/images/slide-2.jpg' }
         ],
+        preloadImage: false,
         timer: false,
-        transition: [ 'zoomOut', ]
+        transition: [ 'zoomOut' ]
     });
   });
 

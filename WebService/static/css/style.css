@@ -138,13 +138,13 @@ footer {
 }
 
 .roundB3 {
-	background: url('../images/about-3.png') no-repeat;
+	background: url('static/images/about-3.png') no-repeat;
 }
 .roundB1 {
-	background: url('../images/chart.png') no-repeat;
+	background: url('static/images/chart.png') no-repeat;
 }
 .roundB2 {
-	background: url('../images/map.png') no-repeat;
+	background: url('static/images/map.png') no-repeat;
 }
 #map { 
 	position:absolute; 
@@ -493,7 +493,7 @@ footer a:hover {
 
 /* modal */
 .modal-dialog .modal-content {
-  background: url('../images/modal-bg.jpg') no-repeat;
+  background: url('static/images/modal-bg.png') no-repeat;
   background-size: cover;
   background-position: center center;
   border-radius: 0;
