@@ -30,12 +30,10 @@
 		<!-- javscript js -->
 		<script src="static/js/jquery.js"></script>
 		<script src="static/js/bootstrap.min.js"></script>
-
-		<script src="static/js/vegas.min.js"></script>
-		<script src="static/js/custom.js"></script>
-
 		<script src="static/js/wow.min.js"></script>
 		<script src="static/js/smoothscroll.js"></script>
+		<script src="static/js/vegas.min.js"></script>
+		<script src="static/js/custom.js"></script>
 
 		<!--
 		<script>
@@ -61,7 +59,70 @@
 		  clear: both;
 		  display: table;
 		}
+
+		.roundB3 {
+			background: url('static/images/about-3.png') no-repeat;
+		}
+		.roundB1 {
+			background: url('static/images/chart.png') no-repeat;
+		}
+		.roundB2 {
+			background: url('static/images/map.png') no-repeat;
+		}
+
+		@font-face {
+			font-family: 'et-line';
+			src:url('static/fonts/et-line.eot');
+			src:url('static/fonts/et-line.eot?#iefix') format('embedded-opentype'),
+				url('static/fonts/et-line.woff') format('woff'),
+				url('static/fonts/et-line.ttf') format('truetype'),
+				url('static/fonts/et-line.svg#et-line') format('svg');
+			font-weight: normal;
+			font-style: normal;
+		}
 	</style>
+
+	<!-- <script>
+		/* jQuery Pre loader
+		-----------------------------------------------*/
+		$(window).load(function(){
+			$('.preloader').fadeOut(1000); // set duration in brackets
+		});
+
+		$(document).ready(function() {
+			/* Home Slideshow Vegas
+			-----------------------------------------------*/
+			$('body').vegas({
+					slides: [
+							{ src: 'static/images/slide-1.jpg' },
+							{ src: 'static/images/slide-2.jpg' }
+					],
+					preloadImage: false,
+					timer: false,
+					transition: [ 'zoomOut' ]
+			});
+
+			/* Back top
+			-----------------------------------------------*/
+			$(window).scroll(function() {
+				 if ($(this).scrollTop() > 200) {
+				 $('.go-top').fadeIn(200);
+				 } else {
+					 $('.go-top').fadeOut(200);
+				 }
+			});   
+			 
+			// Animate the scroll to top
+			$('.go-top').click(function(event) {
+				event.preventDefault();
+				$('html, body').animate({scrollTop: 0}, 300);
+			});
+				 
+			/* wow
+			-------------------------------*/
+			new WOW({ mobile: false }).init();
+		});
+	 </script> -->
 </head>
 <body>
 

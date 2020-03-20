@@ -11,7 +11,7 @@ $(document).ready(function() {
   /* Home Slideshow Vegas
   -----------------------------------------------*/
   $(function() {
-    $('body').vegas('overlay', {
+    $('body').vegas({
         slides: [
             { src: 'static/images/slide-1.jpg' },
             { src: 'static/images/slide-2.jpg' }

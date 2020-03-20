@@ -137,15 +137,6 @@ footer {
     background-color: #48D1CC;
 }
 
-.roundB3 {
-	background: url('static/images/about-3.png') no-repeat;
-}
-.roundB1 {
-	background: url('static/images/chart.png') no-repeat;
-}
-.roundB2 {
-	background: url('static/images/map.png') no-repeat;
-}
 #map { 
 	position:absolute; 
 	top: 270px; 
